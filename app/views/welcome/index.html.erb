@@ -1,5 +1,15 @@
-<h2>Hello World</h2>
+<div class="page-header">
+  <h1>Hello World</h1>
+</div>
 <p>
   The time is now: <%= Time.now %>
+</p>
+<p>
+  <%- if current_user.present? %>
+  <%= link_to "Sign Out", destroy_user_session_url, method: :delete %>
+  <% else %>
+  <%= link_to "Sign In", new_user_session_url %>
+  <%- end -%> /
+  <%= link_to "Sign Up", new_user_session_url %>
 </p>
 

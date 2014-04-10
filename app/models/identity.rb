@@ -8,5 +8,6 @@ class Identity < ActiveRecord::Base
     if identity.nil?
       identity = create(uid: auth.uid, provider: auth.provider)
     end
+    identity
   end
 end

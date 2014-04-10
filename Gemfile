@@ -19,7 +19,11 @@ gem 'coffee-rails', '~> 4.0.0'
 # gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+# If you support IE 6, 7 or 8, lock jQuery in 1.x versions
+gem 'jquery-cdn', '~> 1.0'
+
+# Bootstrap CDN
+gem 'twitter-bootstrap-rails-cdn', '~> 1.1.3'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'

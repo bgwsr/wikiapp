@@ -1,15 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Wikiapp</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>World Startup Wiki Moderator Tool</title>
+  <%= twitter_bootstrap_stylesheet_link_tag :netdna, force: true %>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  
   <%= csrf_meta_tags %>
 </head>
-<body>
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
-<%= yield %>
 
+<body>
+
+<!-- view -->
+<div class="container">
+  <div id="site_alert">
+    <div class="notice"><%= notice %></div>
+    <div class="alert"><%= alert %></div>
+  </div>
+  
+  <%= yield %>
+</div>
+
+<!-- end of view -->
+
+  <%= include_jquery env: :production %>
+  <%= twitter_bootstrap_javascript_include_tag :netdna, force: true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 </body>
+
 </html>
