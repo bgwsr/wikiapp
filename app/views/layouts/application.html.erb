@@ -15,8 +15,12 @@
 <!-- view -->
 <div class="container">
   <div id="site_alert">
-    <div class="notice"><%= notice %></div>
-    <div class="alert"><%= alert %></div>
+  <%- if notice.present? %>
+    <div class="notice alert alert-warning"><%= notice %></div>
+  <%- end %>
+  <%- if alert.present? %>
+    <div class="alert alert-info"><%= alert %></div>
+  <%- end %>
   </div>
   
   <%= yield %>

@@ -61,3 +61,16 @@ body {
   padding-left: 0;
   padding-right: 0;
 }
+.form-signin .auth-shared p {
+  text-align: center;
+}
+.form-signin .auth-shared .lead {
+  margin-top: 10px;
+}
+.form-signin .auth-misc-links {
+  text-align: center;
+  margin-top: 10px;
+}
+.form-signin .auth-misc-links > span {
+  margin-right: 5px;
+}
