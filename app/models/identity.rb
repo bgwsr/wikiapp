@@ -6,6 +6,7 @@ class Identity < ActiveRecord::Base
   def self.find_for_oauth(auth)
     first_name = ''
     last_name = ''
+    full_name = ''
     email = ''
     company_name = ''
     
