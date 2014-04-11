@@ -1,15 +1,35 @@
-<div class="page-header">
+<div class="page-header text-center">
   <h1>Hello World</h1>
 </div>
-<p>
-  The time is now: <%= Time.now %>
-</p>
-<p>
+<div class="text-center">
   <%- if current_user.present? %>
+  <p class="text-center lead">
+    Hi <%= current_user.identities.first.first_name %>!
+  </p>
+
+  <div class="row">
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <div class="panel panel-primary">
+        <div class="panel-body">
+          <p>
+            <a href="#" class="btn btn-block btn-primary btn-lg">
+              <i class="glyphicon glyphicon-plus-sign"></i> I want to add to WSW
+            </a>
+          </p>
+          <p>
+            <a href="#" class="btn btn-block btn-warning btn-lg">
+              <i class="glyphicon glyphicon-edit"></i> I want to add to modify
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
   <%= link_to "Sign Out", destroy_user_session_url, method: :delete %>
   <% else %>
   <%= link_to "Sign In", new_user_session_url %>
-  <%- end -%> /
-  <%= link_to "Sign Up", new_user_session_url %>
-</p>
+  <%- end -%>
+</div>
 

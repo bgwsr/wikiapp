@@ -57,6 +57,9 @@ GEM
     jwt (0.1.11)
       multi_json (>= 1.5)
     kgio (2.9.2)
+    linkedin (0.2.2)
+      nokogiri (~> 1.4.4)
+      oauth (~> 0.4.0)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -66,6 +69,7 @@ GEM
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     mysql2 (0.3.15)
+    nokogiri (1.4.7)
     oauth (0.4.7)
     oauth2 (0.9.3)
       faraday (>= 0.8, < 0.10)
@@ -164,6 +168,7 @@ DEPENDENCIES
   devise
   jbuilder (~> 1.2)
   jquery-cdn (~> 1.0)
+  linkedin
   mysql2
   omniauth
   omniauth-facebook

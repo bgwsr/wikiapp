@@ -53,6 +53,7 @@ gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin'
+gem 'linkedin'
 
 gem 'rails_12factor', group: :production
 

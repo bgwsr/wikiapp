@@ -11,12 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140410044143) do
+ActiveRecord::Schema.define(version: 20140411072624) do
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
     t.string   "provider"
     t.string   "uid"
+    t.string   "full_name"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "company_name"
     t.string   "oauth_token"
     t.string   "oauth_secret"
     t.datetime "oauth_expires_at"

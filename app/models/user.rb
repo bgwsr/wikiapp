@@ -4,8 +4,9 @@ class User < ActiveRecord::Base
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable
-  devise :database_authenticatable, :registerable,
-    :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+  devise :database_authenticatable, :trackable, :validatable, :rememberable, :omniauthable
+  
+  has_many :identities
 
   validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
 
