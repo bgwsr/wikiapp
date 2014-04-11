@@ -57,4 +57,7 @@ gem 'linkedin'
 
 gem 'rails_12factor', group: :production
 
+gem 'rest-client'
+gem 'nokogiri'
+
 ruby "2.1.1"

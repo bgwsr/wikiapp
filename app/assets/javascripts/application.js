@@ -16,3 +16,35 @@
 
 
 window.location.hash = "";
+var data = {collection: '', country: ''};
+
+$('[data-target="choose_country"]').click(function(e){
+  e.preventDefault();
+  $('.form').addClass('hide');
+  $('#thanks').fadeOut();
+  $('#choose_country').removeClass('hide');
+});
+
+
+$('[data-target="add_startup"]').click(function(e){
+  e.preventDefault();
+  $('.form').addClass('hide');
+  data.collection = 'startup';
+  data.country = $('#ddn_country').val();
+  $('#choose_country,#thanks').addClass('hide');
+  $('#add_startup').removeClass('hide');
+});
+
+$('#btn_submit').click(function(e){
+  e.preventDefault();
+  $('.form').addClass('hide');
+  if (data.collection == 'startup')
+  {
+    data.name = $('#startup_name').val();
+    data.year = $('#startup_year').val();
+    data.valuation = $('#startup_valuation').val();
+    data.city = $('#startup_city').val();
+    data.context = $('#startup_description').val();
+  }
+  $('#starting_point').removeClass('hide');
+});

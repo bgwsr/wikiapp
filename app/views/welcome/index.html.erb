@@ -1,18 +1,19 @@
 <div class="page-header text-center">
   <h1>Hello World</h1>
 </div>
+
 <div class="text-center">
   <%- if current_user.present? %>
-  <p class="text-center lead">
+  <p class="text-center lead" onClick="javascript: alert(31);">
     Hi <%= current_user.identities.first.first_name %>!
   </p>
 
-  <div class="row">
+  <div class="row form" id="starting_point">
     <div class="col-xs-12 col-md-6 col-md-offset-3">
       <div class="panel panel-primary">
         <div class="panel-body">
           <p>
-            <a href="#" class="btn btn-block btn-primary btn-lg">
+            <a href="#" class="btn btn-block btn-primary btn-lg" data-target="choose_country">
               <i class="glyphicon glyphicon-plus-sign"></i> I want to add to WSW
             </a>
           </p>
@@ -26,10 +27,94 @@
     </div>
   </div>
   
+  <!-- choose_country -->
+  <div class="row text-left hide form" id="choose_country">
+    <div class="col-md-6 col-md-offset-3">
+      <div>
+        <div class="form-group">
+          <label for="country">Select Country</label>
+          <select class="form-control" id="ddn_country">
+            <option>Philippines</option>
+          </select>
+        </div>
+        
+        <div class="form-group row">
+          
+          <div class="input-group col-md-4">
+            <a href="#" class="btn btn-info btn-block" data-target="add_startup"><i class="glyphicon glyphicon-chevron-right"></i> Startup</a>
+          </div>
+          
+          <div class="input-group col-md-4">
+            <a href="#" class="btn btn-info btn-block" data-target="add_investor"><i class="glyphicon glyphicon-chevron-right"></i> Investor</a>
+          </div>
 
-  <%= link_to "Sign Out", destroy_user_session_url, method: :delete %>
-  <% else %>
-  <%= link_to "Sign In", new_user_session_url %>
-  <%- end -%>
+          <div class="input-group col-md-4">
+            <a href="#" class="btn btn-info btn-block" data-target="add_community"><i class="glyphicon glyphicon-chevron-right"></i> Community</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end choose_country -->
+  
+  <!-- add_startup -->
+  <div class="row text-left hide form" id="add_startup">
+    <div class="col-md-6 col-md-offset-3">
+      <div>
+        <div class="form-group">
+          <label for="startup_name">Name</label>
+          <input type="text" class="form-control" id="startup_name" name="startup_name">
+        </div>
+        
+        <div class="form-group row">
+          <div class="col-md-3">
+            <label for="startup_year">Year Started</label>
+            <input type="text" class="form-control" id="startup_year" name="startup_year">
+          </div>
+        
+          <div class="col-md-3">
+            <label for="startup_valuation">Valuation</label>
+            <input type="text" class="form-control" id="startup_valuation" name="startup_valuation">
+          </div>
+        
+          <div class="col-md-6">
+            <label for="startup_city">City</label>
+            <input type="text" class="form-control" id="startup_city" name="startup_city">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="startup_description">Description / Comments</label>
+          <textarea rows="5" class="form-control" id="startup_description" name="startup_description"></textarea>
+        </div>
+        
+        <p class="text-right">
+          <a href="#" class="btn btn-info btn-lg" id="btn_submit">Submit <i class="glyphicon glyphicon-upload"></i></a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <!-- end of add_startup -->
+  
+  <div class="col-md-6 col-md-offset-3 text-left" id="thanks">
+    <h4>Thanks! <small>Moderation time.</small></h4>
+    
+    
+    <p>
+      Add more:
+      <ul class="text-left">
+        <li><a href="#" data-target="add_startup">Startups</a>?</li>
+        <li><a href="#" data-target="add_investor">Investors</a>?</li>
+      </ul>
+    </p>
+  </div>
+  
+  <div class="col-md-6 col-md-offset-3 text-right">
+    <%= link_to "Sign Out", destroy_user_session_url, method: :delete %>
+    <% else %>
+    <%= link_to "Sign In", new_user_session_url %>
+    <%- end -%>
+  </div>
 </div>
 

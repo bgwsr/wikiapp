@@ -23,8 +23,9 @@ class Identity < ActiveRecord::Base
       end
       
       if auth.provider.eql?('facebook')
-        puts auth.inspect
-#        return nil
+        full_name = auth.info.name
+        first_name = auth.info.first_name
+        last_name = auth.info.last_name
       end
     end
     identity = find_by(provider: auth.provider, uid: auth.uid)
