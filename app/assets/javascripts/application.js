@@ -12,6 +12,10 @@
 //
 //= require jquery_ujs
 //= require turbolinks
+//= require markdown
+//= require to-markdown
+//= require bootstrap-markdown
+//= require autoblend
 //= require_tree .
 
 
@@ -21,7 +25,7 @@ var data = {collection: '', country: ''};
 $('[data-target="choose_country"]').click(function(e){
   e.preventDefault();
   $('.form').addClass('hide');
-  $('#thanks').fadeOut();
+  $('#thanks').addClass('hide');
   $('#choose_country').removeClass('hide');
 });
 
@@ -38,13 +42,127 @@ $('[data-target="add_startup"]').click(function(e){
 $('#btn_submit').click(function(e){
   e.preventDefault();
   $('.form').addClass('hide');
+  s_json = '';
+  
   if (data.collection == 'startup')
   {
-    data.name = $('#startup_name').val();
-    data.year = $('#startup_year').val();
-    data.valuation = $('#startup_valuation').val();
-    data.city = $('#startup_city').val();
-    data.context = $('#startup_description').val();
+    s_json = collect_startup();
   }
+  
+  if (s_json.length)
+  {
+    $.ajax({
+      url: '/api/submissions',
+      type: 'POST',
+      dataType: 'json',
+      contentType: 'application/json',
+      processData: false,
+      data: s_json,
+      success: function(o_return, s_status, o_xhr) {
+        console.log(o_return);
+      }
+    });
+  }
+  
   $('#starting_point').removeClass('hide');
 });
+
+$('a.list-group-item').click(function(){
+  $('#editor textarea').val($(this).find('.data-description').html());
+  $('#editor .modal-title').text($(this).find('.data-title').val());
+  $('#editor #btn_reject').attr('data-id', $(this).find('.data-id').val());
+});
+
+$('a.picker').click(function(e){
+  e.preventDefault;
+  var key = $(this).parents('[data-key]:first').attr('data-key');
+  $('[data-key="'+key+'"]').find('.glyphicon-check').addClass('glyphicon-unchecked').removeClass('glyphicon-check');
+  $('[data-key="'+key+'"]').parents('.form-group').removeClass('has-success');
+  $(this).attr('href', 'javascript:void(0);');
+  $(this).find('.glyphicon').toggleClass('glyphicon-unchecked').toggleClass('glyphicon-check');
+  if ($(this).find('.glyphicon-check').length)
+  {
+    $(this).parents('.form-group').addClass('has-success');
+    $('#'+key).val( $(this).prev('input').val() );
+  }
+});
+
+$('#btn_silk_submit').click(function(){ 
+  btn = $(this);
+  $(this).attr('disabled', '');
+  var enabled = $(this).html();
+  $(this).html($(this).attr('data-disable-with'));
+  $.ajax({
+    url: '/api/submissions/merge',
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json',
+    processData: false,
+    data: '{"status": "approved", "silk_identifier": "'+escape($('#silk_identifier').val())+'"}',
+    complete: function() {
+      btn.html(enabled);
+      btn.removeAttr('disabled');
+    }
+  });
+});
+
+$('.markdown-data').each(function(){
+  $(this).markdown({
+    autofocus: true,
+    savable: false,
+    onSave: function(e) {
+  /*
+      $('.markdown-data').html( markdown.toHTML(e.getContent()) );
+      $('form.ticket-edit').addClass('hide');
+      $('[data-form=".ticket-edit"]').show();
+      description = $('form.ticket-edit #ticket_description').val().replace(/\n/g, "\\n");
+      $.ajax({
+        url: '/api/ticket/update/'+$('form.ticket-edit #ticket_id').val(),
+        type: 'POST',
+        processData: false,
+        dataType: 'json',
+        contentType: 'application/json',
+        data: '{"ticket":{"description":"'+description+'"}}'
+      });
+  */
+    }
+  });
+});
+
+$('#btn_reject').click(function(){
+  var submission_id = $(this).attr('data-id');
+  $('#lgi_'+submission_id).remove();
+  $('#mdl_reject #data_id').val($(this).attr('data-id'));
+});
+
+$('#mdl_reject #btn_submit_reason').click(function(){
+  $.ajax({
+    url: '/api/submissions/'+$('#mdl_reject #data_id').val(),
+    type: 'PATCH',
+    dataType: 'json',
+    contentType: 'application/json',
+    processData: false,
+    data: '{"status": "rejected", "reason": "'+escape($('#body_why').val())+'"}',
+    complete: function() {
+      
+    }
+  });
+  $('#mdl_reject #data_id').val("");
+  $('#mdl_reject #body_why').val("");
+});
+
+function collect_startup()
+{
+  s_json = '{"collection":"Startup","silk_identifier":"'+escape($('#startup_name').val())+'",'
+  s_json = s_json + '"country": "'+escape($('#ddn_country').val())+'",';
+  s_json = s_json + '"content":{"tags":[{"country": "'+escape($('#ddn_country').val())+'"}';
+  s_json = s_json + ',{"category":"Startup"}';
+  s_json = s_json + ',{"title":"'+escape($('#startup_name').val())+'"}';
+  s_json = s_json + ',{"year_founded":"'+escape($('#startup_year').val())+'"}';
+  s_json = s_json + ',{"valuation":"'+escape($('#startup_valuation').val())+'"}';
+  s_json = s_json + ',{"city":"'+escape($('#startup_city').val())+'"}],';
+  s_json = s_json + '"body":"'+escape($('#startup_description').val())+'"}';
+  s_json = s_json + '}';
+  
+  return s_json;
+}

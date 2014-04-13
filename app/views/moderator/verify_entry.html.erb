@@ -1,0 +1,149 @@
+<input type="hidden" id="silk_identifier" name="silk_identifier" value="<%= params['silk_identifier'] %>">
+  <div class="row form" id="starting_point">
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+      <p class="lead" onClick="javascript: alert(31);">
+        Hi <%= current_user.identities.first.first_name %>!
+      </p>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Pending entries for <%= @submissions.first.silk_identifier %></h3>
+        </div>
+        <div class="panel-body">
+          <%-
+            @submissions.each_with_index do |submission,i|
+              contents = ActiveSupport::JSON.decode(submission.content)
+              html_body = ''
+              if contents["comments"].present?
+                html_body = simple_format(URI.decode(contents["comments"]))
+              end
+              
+              tags = contents["tags"]
+              converted_tags = Hash.new
+              available_tags = ['category']
+
+              tags.each do |tag|
+                tag.each_key do |key|
+                  converted_tags[key] = URI.decode(tag[key])
+                  available_tags.push key unless key.eql?('category')
+                end
+              end
+
+              title = submission.silk_identifier
+              article = contents["body"]
+          %>
+
+          <div class="callout callout-warning">
+            <h4>Submitted by <%= submission.user.identities.first.first_name %></h4>
+            
+            <%- if converted_tags['category'].eql?('Startup') %>
+            
+            <%- end %>
+            <div class="row">
+              <% available_tags.each_with_index.reject {|tag,i| ["title","category"].include?(tag)}.each do |tag,i| %>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label><%= tag.titleize %></label>
+                  <div class="input-group" data-key="<%= tag %>">
+                    <input type="text" class="form-control input-sm" value="<%= converted_tags[tag] %>">
+                    <a href="#" class="picker input-group-addon"><i class="glyphicon glyphicon-unchecked"></i></a>
+                  </div>
+                </div>
+              </div>
+              <% end %>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Content</label>
+                  <textarea class="form-control" rows="4"><%= article %></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <%- end %>
+
+          <div class="callout callout-info">
+            <h4>Final</h4>
+            
+            <div class="row">
+            
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Country</label>
+                  <input type="text" class="form-control input-sm" id="country">
+                </div>
+              </div>
+            
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Year Founded</label>
+                  <input type="text" class="form-control input-sm" id="year_founded">
+                </div>
+              </div>
+            
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Valuation</label>
+                  <input type="text" class="form-control input-sm" id="valuation">
+                </div>
+              </div>
+            
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>City</label>
+                  <input type="text" class="form-control input-sm" id="city">
+                </div>
+              </div>
+              
+            </div>
+            
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Content</label>
+                  <textarea class="markdown-data form-control" rows="4"></textarea>
+                </div>
+              </div>
+            </div>
+            
+            <div class="text-right">
+              <button type="button" id="btn_silk_submit" class="btn btn-primary" data-disable-with="Please wait...">Submit to Silk <i class="glyphicon glyphicon-send"></i></button>
+            </div>
+          </div>
+
+        </div>
+                
+        <div class="panel-footer">
+          <div class="text-right">
+            <%= link_to destroy_user_session_url, method: :delete, class: "text-right" do %>
+              Sign Out <i class="glyphicon glyphicon-log-out"></i>
+            <%- end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<div class="modal fade" id="mdl_reject">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Reject Submission</h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="data_id" value="">
+        <div class="form-group">
+          <label for="body_why">Why?</label>
+          <textarea class="form-control" rows="5" id="body_why"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_submit_reason" type="button" class="btn btn-primary" data-dismiss="modal"><i class="glyphicon glyphicon-send"></i> Send</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

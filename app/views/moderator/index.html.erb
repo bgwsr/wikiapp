@@ -1,0 +1,94 @@
+  <div class="row form" id="starting_point">
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+      <p class="lead" onClick="javascript: alert(31);">
+        Hi <%= current_user.identities.first.first_name %>!
+      </p>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Latest changes</h3>
+        </div>
+        <div class="panel-body">
+          <div class="list-group">
+          <%-
+            @submissions.each_with_index do |submission,i|
+              contents = ActiveSupport::JSON.decode(submission.content)
+              html_body = ''
+              if contents["comments"].present?
+                html_body = simple_format(URI.decode(contents["comments"]))
+              end
+              
+              tags = contents["tags"]
+              country = ''
+              category = ''
+              valuation = ''
+              city = ''
+              tags.each do |tag|
+                country = URI.decode(tag["country"]) if tag["country"].present?
+                category = URI.decode(tag["collection"]) if tag["collection"].present?
+                valuation = URI.decode(tag["valuation"]) if tag["valuation"].present?
+                city = URI.decode(tag["city"]) if tag["city"].present?
+              end
+              
+              title = submission.silk_identifier
+              article = contents["body"]
+          %>
+            <a class="list-group-item" href="/verify-entry?silk_identifier=<%= submission.silk_identifier %>">
+              <h6><%= title %> <small>by <%= submission.user.identities.first.first_name %></small> <i class="text-primary pull-right glyphicon glyphicon-chevron-right"></i></h6>
+            </a>
+          <%- end %>
+          </div>
+        </div>
+                
+        <div class="panel-footer">
+          <div class="text-right">
+            <%= link_to destroy_user_session_url, method: :delete, class: "text-right" do %>
+              Sign Out <i class="glyphicon glyphicon-log-out"></i>
+            <%- end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="modal fade" id="editor">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form">
+          <textarea class="form-control" rows="10" id="body_description"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_reject" type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#mdl_reject"><i class="glyphicon glyphicon-remove"></i> Reject</button>
+        <button id="btn_approve" type="button" class="btn btn-success"><i class="glyphicon glyphicon-check"></i> Approve</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div class="modal fade" id="mdl_reject">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Reject Submission</h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="data_id" value="">
+        <div class="form-group">
+          <label for="body_why">Why?</label>
+          <textarea class="form-control" rows="5" id="body_why"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_submit_reason" type="button" class="btn btn-primary" data-dismiss="modal"><i class="glyphicon glyphicon-send"></i> Send</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

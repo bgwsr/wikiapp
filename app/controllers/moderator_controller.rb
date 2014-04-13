@@ -1,0 +1,29 @@
+class ModeratorController < ApplicationController
+  require 'redcarpet/compat'
+  def index
+    if current_user.present? and current_user.ambassador?
+      if current_user.countries.eql?('all')
+        @submissions = Submission.where(status: "pending")
+      else
+        countries = current_user.countries.split(",")
+        @submissions = Submission.where(country: countries, status: "pending")
+      end
+    else
+      render text: "not allowed", status: 403 and return
+    end
+  end
+  
+  def verify_entry
+    if current_user.present? and current_user.ambassador?
+      if current_user.countries.eql?('all')
+        @submissions = Submission.where(silk_identifier: params[:silk_identifier], status: "pending")
+      else
+        countries = current_user.countries.split(",")
+        @submissions = Submission.where(country: countries, silk_identifier: params[:silk_identifier], status: "pending")
+      end
+      render text: "not found", status: 404 and return if @submissions.empty?
+    else
+      render text: "not allowed", status: 403 and return
+    end    
+  end
+end

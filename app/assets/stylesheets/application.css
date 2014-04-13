@@ -74,3 +74,64 @@ body {
 .form-signin .auth-misc-links > span {
   margin-right: 5px;
 }
+
+
+
+/* Side notes for calling out things
+-------------------------------------------------- */
+
+/* Base styles (regardless of theme) */
+.callout {
+  margin: 20px 0;
+  padding: 15px;
+  border-left: 3px solid #eee;
+}
+.callout h4 {
+  margin-top: 0;
+}
+.callout p:last-child {
+  margin-bottom: 0;
+}
+.callout code,
+.callout .highlight {
+  background-color: #fff;
+}
+
+/* Themes for different contexts */
+.callout-danger {
+  background-color: #fcf2f2;
+  border-color: #dFb5b4;
+}
+.callout-warning {
+  background-color: #fefbed;
+  border-color: #f1e7bc;
+}
+.callout-info {
+  background-color: #f4f8fa;
+  border-color: #5bc0de;
+}
+
+.callout-danger h4 {
+  color: #B94A48;
+}
+
+.callout-warning h4 {
+  color: #C09853;
+}
+
+.callout-info h4 {
+  color: #5bc0de;
+}
+
+.md-preview {
+  padding: 9px 14px;
+  margin-bottom: 14px;
+  background-color: #ffffff;
+  border: 1px solid #e1e1e8;
+  border-radius: 4px;
+  padding: 5px 10px;
+  min-height: 90px;
+}
+.md-header.btn-toolbar {
+  margin-bottom: 5px;
+}
