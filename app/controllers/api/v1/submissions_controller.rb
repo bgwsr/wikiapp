@@ -4,7 +4,7 @@ class Api::V1::SubmissionsController < ApplicationController
     def create
       if current_user.present?
         s = Submission.new
-        s.silk_identifier = params[:silk_identifier]
+        s.silk_identifier = URI.decode(params[:silk_identifier])
         s.user_id = current_user.id
         contents = ActiveSupport::JSON.decode(params[:content].to_json)
         contents['body'] = URI.decode(contents["body"])
