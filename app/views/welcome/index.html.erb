@@ -86,13 +86,74 @@
         </div>
         
         <p class="text-right">
-          <a href="#" class="btn btn-info btn-lg" id="btn_submit">Submit <i class="glyphicon glyphicon-upload"></i></a>
+          <a href="#" class="btn btn-info btn-lg" id="btn_submit_startup">Submit <i class="glyphicon glyphicon-upload"></i></a>
         </p>
 
       </div>
     </div>
   </div>
   <!-- end of add_startup -->
+  
+  <!-- add_investor -->
+  <div class="row text-left hide form" id="add_investor">
+    <div class="col-md-6 col-md-offset-3">
+      <div>
+        <div class="form-group">
+          <label for="investor_name">Name</label>
+          <input type="text" class="form-control" id="investor_name" name="investor_name">
+        </div>
+        
+        <div class="form-group row">
+        
+          <div class="col-md-6">
+            <label for="investor_city">City</label>
+            <input type="text" class="form-control" id="investor_city" name="investor_city">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="investor_description">Description / Comments</label>
+          <textarea rows="5" class="form-control" id="investor_description" name="investor_description"></textarea>
+        </div>
+        
+        <p class="text-right">
+          <a href="#" class="btn btn-info btn-lg" id="btn_submit_investor">Submit <i class="glyphicon glyphicon-upload"></i></a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <!-- end of add_investor -->
+  
+  <!-- add_community -->
+  <div class="row text-left hide form" id="add_community">
+    <div class="col-md-6 col-md-offset-3">
+      <div>
+        <div class="form-group">
+          <label for="community_name">Name</label>
+          <input type="text" class="form-control" id="community_name" name="community_name">
+        </div>
+        
+        <div class="form-group row">        
+          <div class="col-md-6">
+            <label for="community_city">City</label>
+            <input type="text" class="form-control" id="community_city" name="community_city">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="community_description">Description / Comments</label>
+          <textarea rows="5" class="form-control" id="community_description" name="community_description"></textarea>
+        </div>
+        
+        <p class="text-right">
+          <a href="#" class="btn btn-info btn-lg" id="btn_submit_community">Submit <i class="glyphicon glyphicon-upload"></i></a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <!-- end of add_community -->
   
   <div class="col-md-6 col-md-offset-3 text-left hide" id="thanks">
     <h4>Thanks! <small>Moderation time.</small></h4>
@@ -103,6 +164,7 @@
       <ul class="text-left">
         <li><a href="#" data-target="add_startup">Startups</a>?</li>
         <li><a href="#" data-target="add_investor">Investors</a>?</li>
+        <li><a href="#" data-target="add_community">Communities</a>?</li>
       </ul>
     </p>
   </div>

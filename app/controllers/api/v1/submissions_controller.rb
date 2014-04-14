@@ -40,9 +40,37 @@ class Api::V1::SubmissionsController < ApplicationController
     
     def merge
       if current_user.present? and current_user.ambassador?
-        submissions = Submission.where(silk_identifier: params[:silk_identifier])
-        submissions.update_all(status: "merged")
-        render :json => { :info => submissions }, :status => 200 and return
+#        submissions = Submission.where(silk_identifier: params[:silk_identifier])
+#        submissions.update_all(status: "merged")
+        
+        silk_sid = Silker.authenticate( ENV['SILK_EMAIL'], ENV['SILK_PASSWORD'] )
+        silker = Silker.new( silk_sid, 'nerubia' )
+        s_silk_xml = silker.get_private_page_html( URI.decode(params[:silk_identifier]) )
+        
+        puts "original:"
+        puts s_silk_xml
+        
+        s_silk_xml = '<article data-article="" data-format="1" data-title="'+URI.decode(params[:silk_identifier])+'" data-tag-context="/tag/'+URI.decode(params[:category].downcase)+'">'
+        s_silk_xml = s_silk_xml + '<section class="body">'
+        s_silk_xml = s_silk_xml + '  <div class="layout meta" style="display:inline-block;float:none;">'
+        s_silk_xml = s_silk_xml + '    <p>hello</p>'
+        s_silk_xml = s_silk_xml + '    <img src="http://i.imgur.com/IpwY1fe.jpg" alt="Just in case" title="Tooltip" width="42" height="42" />'
+        s_silk_xml = s_silk_xml + '    <p>hello2</p>'
+        s_silk_xml = s_silk_xml + '  </div>'
+        s_silk_xml = s_silk_xml + '<div class="layout content" style="display:inline-block;float:none;">'
+        s_silk_xml = s_silk_xml + '  <a data-tag-uri="/tag/reviewer">Gerard</a> is 30 years old.'
+        s_silk_xml = s_silk_xml + "  "+URI.decode(params[:content]).gsub("\n", "<br>")
+        s_silk_xml = s_silk_xml + '</div>'
+        s_silk_xml = s_silk_xml + '</section>'
+        s_silk_xml = s_silk_xml + '</article>'
+        
+        puts "updated:"
+        puts s_silk_xml
+        
+        silker.create_or_update_page( URI.decode(params[:silk_identifier]), s_silk_xml )
+        
+        render :json => { :info => s_silk_xml } and return
+        #render :json => { :info => submissions }, :status => 200 and return
       end
       failure
     end

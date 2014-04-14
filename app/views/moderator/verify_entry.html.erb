@@ -34,10 +34,9 @@
 
           <div class="callout callout-warning">
             <h4>Submitted by <%= submission.user.identities.first.first_name %></h4>
-            
-            <%- if converted_tags['category'].eql?('Startup') %>
-            
-            <%- end %>
+            <input type="hidden" id="silk_category" value="<%= converted_tags['category'] %>">
+
+
             <div class="row">
               <% available_tags.each_with_index.reject {|tag,i| ["title","category"].include?(tag)}.each do |tag,i| %>
               <div class="col-md-3">
