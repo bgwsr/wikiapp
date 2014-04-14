@@ -76,7 +76,7 @@ $('[id*="btn_submit_"]').click(function(e){
   
   if (data.collection == 'Community')
   {
-    s_json = collect_investor();
+    s_json = collect_community();
   }
   
   if (s_json.length)
@@ -135,6 +135,7 @@ $('#btn_silk_submit').click(function(){
     complete: function() {
       btn.html(enabled);
       btn.removeAttr('disabled');
+      location.href = "/moderator"
     }
   });
 });
@@ -194,7 +195,7 @@ function collect_startup()
   s_json = s_json + ',{"year_founded":"'+escape($('#startup_year').val())+'"}';
   s_json = s_json + ',{"valuation":"'+escape($('#startup_valuation').val())+'"}';
   s_json = s_json + ',{"city":"'+escape($('#startup_city').val())+'"}],';
-  s_json = s_json + '"body":"'+escape($('#startup_description').val())+'"}';
+  s_json = s_json + '"body":"'+$('#startup_description').val()+'"}';
   s_json = s_json + '}';
   
   return s_json;
@@ -208,7 +209,7 @@ function collect_investor()
   s_json = s_json + ',{"category":"Investor"}';
   s_json = s_json + ',{"title":"'+escape($('#investor_name').val())+'"}';
   s_json = s_json + ',{"city":"'+escape($('#investor_city').val())+'"}],';
-  s_json = s_json + '"body":"'+escape($('#investor_description').val())+'"}';
+  s_json = s_json + '"body":"'+$('#investor_description').val()+'"}';
   s_json = s_json + '}';
   
   return s_json;
@@ -222,7 +223,7 @@ function collect_community()
   s_json = s_json + ',{"category":"Community"}';
   s_json = s_json + ',{"title":"'+escape($('#community_name').val())+'"}';
   s_json = s_json + ',{"city":"'+escape($('#community_city').val())+'"}],';
-  s_json = s_json + '"body":"'+escape($('#community_description').val())+'"}';
+  s_json = s_json + '"body":"'+$('#community_description').val()+'"}';
   s_json = s_json + '}';
   
   return s_json;

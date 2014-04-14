@@ -46,29 +46,32 @@ class Api::V1::SubmissionsController < ApplicationController
         
         silk_sid = Silker.authenticate( ENV['SILK_EMAIL'], ENV['SILK_PASSWORD'] )
         silker = Silker.new( silk_sid, ENV['SILK_SITE'] )
-        s_silk_xml = silker.get_private_page_html( URI.decode(params[:silk_identifier]) )
+        #s_silk_xml = silker.get_private_page_html( URI.decode(params[:silk_identifier]) )
         
-        puts "original:"
-        puts s_silk_xml
+        #puts "original:"
+        #puts s_silk_xml
         markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true)
         s_silk_xml = '<article data-article="" data-format="1" data-title="'+URI.decode(params[:silk_identifier])+'" data-tag-context="/tag/'+URI.decode(params[:category].downcase)+'">'
-        s_silk_xml = s_silk_xml + '<section class="body">'
-        s_silk_xml = s_silk_xml + '  <div class="layout meta" style="display:inline-block;float:none;">'
-        s_silk_xml = s_silk_xml + '    <p>hello</p>'
-        s_silk_xml = s_silk_xml + '    <img src="http://i.imgur.com/IpwY1fe.jpg" alt="Just in case" title="Tooltip" width="42" height="42" />'
-        s_silk_xml = s_silk_xml + '    <p>hello2</p>'
-        s_silk_xml = s_silk_xml + '  </div>'
-        s_silk_xml = s_silk_xml + '<div class="layout content" style="display:inline-block;float:none;">'
-        s_silk_xml = s_silk_xml + '  <a data-tag-uri="/tag/reviewer">Gerard</a> is 30 years old.'
-        s_silk_xml = s_silk_xml + "  "+markdown.render(URI.decode(params[:content][:body]).gsub("\n", "<br />"))
-        s_silk_xml = s_silk_xml + '</div>'
-        s_silk_xml = s_silk_xml + '</section>'
+#         s_silk_xml = s_silk_xml + '<section class="body">'
+#         s_silk_xml = s_silk_xml + '<div class="layout meta" style="display:inline-block;float:none;">'
+#         s_silk_xml = s_silk_xml + '<p>hello</p>'
+#         s_silk_xml = s_silk_xml + '<img src="http://i.imgur.com/IpwY1fe.jpg" alt="Just in case" title="Tooltip" width="42" height="42" />'
+#         s_silk_xml = s_silk_xml + '<p>hello2</p>'
+#         s_silk_xml = s_silk_xml + '</div>'
+#         s_silk_xml = s_silk_xml + '<div class="layout content" style="display:inline-block;float:none;">'
+#         s_silk_xml = s_silk_xml + '<a data-tag-uri="/tag/reviewer">Gerard</a> is 30 years old.'
+#         s_silk_xml = s_silk_xml + markdown.render(URI.decode(params[:content]).gsub("\n", "<br />"))
+#         s_silk_xml = s_silk_xml + '</div>'
+#         s_silk_xml = s_silk_xml + '</section>'
+        s_silk_xml = s_silk_xml + markdown.render(URI.decode(params[:content]).gsub("\n", "<br />"))
         s_silk_xml = s_silk_xml + '</article>'
         
-        puts "updated:"
+        puts "updated #{URI.decode(params[:silk_identifier])}:"
         puts s_silk_xml
         
-        silker.create_or_update_page( URI.decode(params[:silk_identifier]), s_silk_xml )
+        if silker.create_or_update_page( URI.decode(params[:silk_identifier]), s_silk_xml ).nil?
+          render :json => { :error => "Houston we have a problem" }, status: :unprocessable_entity and return
+        end
         
         render :json => { :info => s_silk_xml } and return
         #render :json => { :info => submissions }, :status => 200 and return
