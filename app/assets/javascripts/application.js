@@ -133,6 +133,7 @@ $('#btn_silk_submit').click(function(){
             +'"silk_identifier": "'+escape($('#silk_identifier').val())+'", '
             +'"content": "'+escape(markdown.toHTML($('.md-input').val()))+'"}',
     complete: function() {
+      $('input[type="text"],textarea').val('');
       btn.html(enabled);
       btn.removeAttr('disabled');
       location.href = "/moderator"
