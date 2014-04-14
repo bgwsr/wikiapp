@@ -59,7 +59,7 @@ class Api::V1::SubmissionsController < ApplicationController
         s_silk_xml = s_silk_xml + '  </div>'
         s_silk_xml = s_silk_xml + '<div class="layout content" style="display:inline-block;float:none;">'
         s_silk_xml = s_silk_xml + '  <a data-tag-uri="/tag/reviewer">Gerard</a> is 30 years old.'
-        s_silk_xml = s_silk_xml + "  "+URI.decode(params[:content]).gsub("\n", "<br>")
+        s_silk_xml = s_silk_xml + "  "+URI.decode(params[:content]).gsub("\n", "<br />")
         s_silk_xml = s_silk_xml + '</div>'
         s_silk_xml = s_silk_xml + '</section>'
         s_silk_xml = s_silk_xml + '</article>'
