@@ -72,7 +72,7 @@ $('[id*="btn_submit_"]').click(function(e){
   if (data.collection == 'Investors')
   {
     s_json = collect_investor();
-  
+  }
   
   if (data.collection == 'Communities')
   {
