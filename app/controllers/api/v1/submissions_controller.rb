@@ -1,5 +1,6 @@
 require 'json'
 require 'custom/silker'
+require 'redcarpet/compat'
 class Api::V1::SubmissionsController < ApplicationController
     def create
       if current_user.present?
@@ -49,7 +50,7 @@ class Api::V1::SubmissionsController < ApplicationController
         
         puts "original:"
         puts s_silk_xml
-        
+        markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true)
         s_silk_xml = '<article data-article="" data-format="1" data-title="'+URI.decode(params[:silk_identifier])+'" data-tag-context="/tag/'+URI.decode(params[:category].downcase)+'">'
         s_silk_xml = s_silk_xml + '<section class="body">'
         s_silk_xml = s_silk_xml + '  <div class="layout meta" style="display:inline-block;float:none;">'
@@ -59,7 +60,7 @@ class Api::V1::SubmissionsController < ApplicationController
         s_silk_xml = s_silk_xml + '  </div>'
         s_silk_xml = s_silk_xml + '<div class="layout content" style="display:inline-block;float:none;">'
         s_silk_xml = s_silk_xml + '  <a data-tag-uri="/tag/reviewer">Gerard</a> is 30 years old.'
-        s_silk_xml = s_silk_xml + "  "+URI.decode(params[:content]).gsub("\n", "<br />")
+        s_silk_xml = s_silk_xml + "  "+markdown.render(URI.decode(params[:content]).gsub("\n", "<br />"))
         s_silk_xml = s_silk_xml + '</div>'
         s_silk_xml = s_silk_xml + '</section>'
         s_silk_xml = s_silk_xml + '</article>'
