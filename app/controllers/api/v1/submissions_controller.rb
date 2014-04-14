@@ -41,8 +41,7 @@ class Api::V1::SubmissionsController < ApplicationController
     
     def merge
       if current_user.present? and current_user.ambassador?
-#        submissions = Submission.where(silk_identifier: params[:silk_identifier])
-#        submissions.update_all(status: "merged")
+        submissions = Submission.where(silk_identifier: params[:silk_identifier])
         
         silk_sid = Silker.authenticate( ENV['SILK_EMAIL'], ENV['SILK_PASSWORD'] )
         silker = Silker.new( silk_sid, ENV['SILK_SITE'] )
@@ -71,6 +70,8 @@ class Api::V1::SubmissionsController < ApplicationController
         
         if silker.create_or_update_page( URI.decode(params[:silk_identifier]), s_silk_xml ).nil?
           render :json => { :error => "Houston we have a problem" }, status: :unprocessable_entity and return
+        else
+          submissions.update_all(status: "merged")
         end
         
         render :json => { :info => s_silk_xml } and return
