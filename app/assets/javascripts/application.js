@@ -33,7 +33,7 @@ $('[data-target="choose_country"]').click(function(e){
 $('[data-target="add_startup"]').click(function(e){
   e.preventDefault();
   $('.form').addClass('hide');
-  data.collection = 'Startup';
+  data.collection = 'Startups';
   data.country = $('#ddn_country').val();
   $('#choose_country,#thanks').addClass('hide');
   $('#add_startup').removeClass('hide');
@@ -43,7 +43,7 @@ $('[data-target="add_startup"]').click(function(e){
 $('[data-target="add_investor"]').click(function(e){
   e.preventDefault();
   $('.form').addClass('hide');
-  data.collection = 'Investor';
+  data.collection = 'Investors';
   data.country = $('#ddn_country').val();
   $('#choose_country,#thanks').addClass('hide');
   $('#add_investor').removeClass('hide');
@@ -53,7 +53,7 @@ $('[data-target="add_investor"]').click(function(e){
 $('[data-target="add_community"]').click(function(e){
   e.preventDefault();
   $('.form').addClass('hide');
-  data.collection = 'Community';
+  data.collection = 'Communities';
   data.country = $('#ddn_country').val();
   $('#choose_country,#thanks').addClass('hide');
   $('#add_community').removeClass('hide');
@@ -64,17 +64,17 @@ $('[id*="btn_submit_"]').click(function(e){
   $('.form').addClass('hide');
   s_json = '';
   
-  if (data.collection == 'Startup')
+  if (data.collection == 'Startups')
   {
     s_json = collect_startup();
   }
   
-  if (data.collection == 'Investor')
+  if (data.collection == 'Investors')
   {
     s_json = collect_investor();
-  }
   
-  if (data.collection == 'Community')
+  
+  if (data.collection == 'Communities')
   {
     s_json = collect_community();
   }
@@ -188,10 +188,10 @@ $('#mdl_reject #btn_submit_reason').click(function(){
 
 function collect_startup()
 {
-  s_json = '{"collection":"Startup","silk_identifier":"'+escape($('#startup_name').val())+'",'
+  s_json = '{"collection":"Startups","silk_identifier":"'+escape($('#startup_name').val())+'",'
   s_json = s_json + '"country": "'+escape($('#ddn_country').val())+'",';
   s_json = s_json + '"content":{"tags":[{"country": "'+escape($('#ddn_country').val())+'"}';
-  s_json = s_json + ',{"category":"Startup"}';
+  s_json = s_json + ',{"category":"startups"}';
   s_json = s_json + ',{"title":"'+escape($('#startup_name').val())+'"}';
   s_json = s_json + ',{"year_founded":"'+escape($('#startup_year').val())+'"}';
   s_json = s_json + ',{"valuation":"'+escape($('#startup_valuation').val())+'"}';
@@ -204,10 +204,10 @@ function collect_startup()
 
 function collect_investor()
 {
-  s_json = '{"collection":"Investor","silk_identifier":"'+escape($('#investor_name').val())+'",'
+  s_json = '{"collection":"Investors","silk_identifier":"'+escape($('#investor_name').val())+'",'
   s_json = s_json + '"country": "'+escape($('#ddn_country').val())+'",';
   s_json = s_json + '"content":{"tags":[{"country": "'+escape($('#ddn_country').val())+'"}';
-  s_json = s_json + ',{"category":"Investor"}';
+  s_json = s_json + ',{"category":"investors"}';
   s_json = s_json + ',{"title":"'+escape($('#investor_name').val())+'"}';
   s_json = s_json + ',{"city":"'+escape($('#investor_city').val())+'"}],';
   s_json = s_json + '"body":"'+$('#investor_description').val()+'"}';
@@ -218,10 +218,10 @@ function collect_investor()
 
 function collect_community()
 {
-  s_json = '{"collection":"Community","silk_identifier":"'+escape($('#community_name').val())+'",'
+  s_json = '{"collection":"Communities","silk_identifier":"'+escape($('#community_name').val())+'",'
   s_json = s_json + '"country": "'+escape($('#ddn_country').val())+'",';
   s_json = s_json + '"content":{"tags":[{"country": "'+escape($('#ddn_country').val())+'"}';
-  s_json = s_json + ',{"category":"Community"}';
+  s_json = s_json + ',{"category":"communities"}';
   s_json = s_json + ',{"title":"'+escape($('#community_name').val())+'"}';
   s_json = s_json + ',{"city":"'+escape($('#community_city').val())+'"}],';
   s_json = s_json + '"body":"'+$('#community_description').val()+'"}';
