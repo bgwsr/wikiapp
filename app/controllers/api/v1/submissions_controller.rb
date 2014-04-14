@@ -44,7 +44,7 @@ class Api::V1::SubmissionsController < ApplicationController
 #        submissions.update_all(status: "merged")
         
         silk_sid = Silker.authenticate( ENV['SILK_EMAIL'], ENV['SILK_PASSWORD'] )
-        silker = Silker.new( silk_sid, 'nerubia' )
+        silker = Silker.new( silk_sid, ENV['SILK_SITE'] )
         s_silk_xml = silker.get_private_page_html( URI.decode(params[:silk_identifier]) )
         
         puts "original:"
