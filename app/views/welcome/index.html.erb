@@ -4,7 +4,7 @@
 
 <div class="text-center">
   <%- if current_user.present? %>
-  <p class="text-center lead" onClick="javascript: alert(31);">
+  <p class="text-center lead">
     Hi <%= current_user.identities.first.first_name %>!
   </p>
 
@@ -48,6 +48,18 @@
           <div class="input-group col-md-4">
             <a href="#" class="btn btn-info btn-block" data-target="add_community"><i class="glyphicon glyphicon-chevron-right"></i> Community</a>
           </div>
+
+        </div>
+
+        
+        <div class="form-group row">
+          <div class="input-group col-md-4">
+            <a href="#" class="btn btn-info btn-block" data-target="add_people"><i class="glyphicon glyphicon-chevron-right"></i> People</a>
+          </div>
+          <div class="input-group col-md-4">
+            <a href="#" class="btn btn-info btn-block" data-target="add_opportunity"><i class="glyphicon glyphicon-chevron-right"></i> Opportunity</a>
+          </div>
+
         </div>
       </div>
     </div>
@@ -154,6 +166,124 @@
     </div>
   </div>
   <!-- end of add_community -->
+  
+  <!-- add_people -->
+  <div class="row text-left hide form" id="add_people">
+    <div class="col-md-6 col-md-offset-3">
+      <div>
+        <div class="form-group">
+          <label for="person_name">Name</label>
+          <input type="text" class="form-control" id="person_name" name="person_name">
+        </div>
+        
+        <div class="form-group row">        
+          <div class="col-md-6">
+            <label for="person_city">City</label>
+            <input type="text" class="form-control" id="person_city" name="person_city">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="person_description">Description / Comments</label>
+          <textarea rows="5" class="form-control" id="person_description" name="person_description"></textarea>
+        </div>
+        
+        <p class="text-right">
+          <a href="#" class="btn btn-info btn-lg" id="btn_submit_person">Submit <i class="glyphicon glyphicon-upload"></i></a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <!-- end of add_people -->
+  
+  <!-- add_opportunity -->
+  <div class="row text-left hide form" id="add_opportunity">
+    <div class="col-md-6 col-md-offset-3">
+      <div>
+        <div class="form-group">
+          <label for="opportunity_name">Local Market Leader</label>
+          <select name="opportunity_name" id="opportunity_name" class="form-control" data-tag>
+            <option>Remittance</option>
+            <option>Crowdfunding</option>
+            <option>Lending</option>
+            <option>Gambling</option>
+            <option>Desktop Gaming</option>
+            <option>Mobile Gaming</option>
+            <option>Music Streaming</option>
+            <option>Microwork</option>
+            <option>Virtual Assistant</option>
+            <option>Outsourcing Services</option>
+            <option>Merchange Processing</option>
+            <option>Mobile Payments</option>
+            <option>Online Payment</option>
+            <option>Home Purchase</option>
+            <option>Apartment Rental</option>
+            <option>Housing Sharing</option>
+            <option>Office Rental</option>
+            <option>Job Boards</option>
+            <option>Web Search</option>
+            <option>Blogging</option>
+            <option>Social Community</option>
+            <option>Social Network</option>
+            <option>Mobile Communication</option>
+            <option>Private Car Service</option>
+            <option>Taxi Service</option>
+            <option>Carpool Service</option>
+            <option>Plane Ticketing</option>
+            <option>Hotel Booking</option>
+            <option>Bitcoin Exchange</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="local_leader_name">Local Market Leader</label>
+          <input type="text" class="form-control" id="local_leader_name" name="local_leader_name">
+        </div>
+        
+        <div class="form-group row">        
+          <div class="col-md-12">
+            <label for="person_city">Local Players (separated by new line)</label>
+            <textarea rows="5" class="form-control" id="local_players" name="local_players"></textarea>
+          </div>
+        </div>
+        
+        <div class="form-group row">
+          <div class="col-md-6">
+            <label for="market_saturation">Market Saturation</label>
+            <select name="market_saturation" id="market_saturation" class="form-control">
+              <option value="4">Saturated</option>
+              <option value="3">Mature</option>
+              <option value="2">Semi-mature</option>
+              <option value="1">Infancy</option>
+              <option value="0">Non-existent</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="m_market_saturation">Mobile Market Saturation</label>
+            <select name="m_market_saturation" id="m_market_saturation" class="form-control">
+              <option value="4">Saturated</option>
+              <option value="3">Mature</option>
+              <option value="2">Semi-mature</option>
+              <option value="1">Infancy</option>
+              <option value="0">Non-existent</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="opportunity_comments">Comments</label>
+          <textarea rows="5" class="markdown-data form-control" id="opportunity_comments" name="opportunity_comments"></textarea>
+        </div>
+        
+        <p class="text-right">
+          <a href="#" class="btn btn-info btn-lg" id="btn_submit_person">Submit <i class="glyphicon glyphicon-upload"></i></a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <!-- end of add_opportunity -->
   
   <div class="col-md-6 col-md-offset-3 text-left hide" id="thanks">
     <h4>Thanks! <small>Moderation time.</small></h4>

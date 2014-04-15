@@ -1,7 +1,7 @@
 <input type="hidden" id="silk_identifier" name="silk_identifier" value="<%= params['silk_identifier'] %>">
   <div class="row form" id="starting_point">
     <div class="col-xs-12 col-md-8 col-md-offset-2">
-      <p class="lead" onClick="javascript: alert(31);">
+      <p class="lead">
         Hi <%= current_user.identities.first.first_name %>!
       </p>
       <div class="panel panel-primary">
@@ -10,6 +10,8 @@
         </div>
         <div class="panel-body">
           <%-
+            first_article = ''
+            converted_tags = Hash.new
             @submissions.each_with_index do |submission,i|
               contents = ActiveSupport::JSON.decode(submission.content)
               html_body = ''
@@ -29,7 +31,10 @@
               end
 
               title = submission.silk_identifier
+              first_title = title unless title.present?
+              
               article = contents["body"]
+              first_article = article unless first_article.present?
           %>
 
           <div class="callout callout-warning">
@@ -38,10 +43,10 @@
 
 
             <div class="row">
-              <% available_tags.each_with_index.reject {|tag,i| ["title","category"].include?(tag)}.each do |tag,i| %>
-              <div class="col-md-3">
+              <% available_tags.each_with_index.reject {|tag,i| ["title","category","Mobile%20Market%20Saturation%20Color","Market%20Saturation%20Color"].include?(tag)}.each do |tag,i| %>
+              <div class="col-md-<%= ["opportunities"].include?(converted_tags['category']) ? 4 : 3 %>">
                 <div class="form-group">
-                  <label><%= tag.titleize %></label>
+                  <label><%= URI.decode(tag).titleize %></label>
                   <div class="input-group" data-key="<%= tag %>">
                     <input type="text" class="form-control input-sm" value="<%= converted_tags[tag] %>">
                     <a href="#" class="picker input-group-addon"><i class="glyphicon glyphicon-unchecked"></i></a>
@@ -58,6 +63,12 @@
                 </div>
               </div>
             </div>
+            
+            <div class="text-right">
+              <button type="button" class="btn btn-danger btn-reject btn-xs" data-reject-id="<%= submission.id %>">
+                <i class="glyphicon glyphicon-remove"></i> Reject
+              </button>
+            </div>
           </div>
 
           <%- end %>
@@ -70,28 +81,28 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Country</label>
-                  <input type="text" class="form-control input-sm" id="country">
+                  <input type="text" class="form-control input-sm" id="country" value="<%= converted_tags['country'] if converted_tags['country'].present? %>">
                 </div>
               </div>
             
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Year Founded</label>
-                  <input type="text" class="form-control input-sm" id="year_founded">
+                  <input type="text" class="form-control input-sm" id="year_founded" value="<%= converted_tags['year_founded'] if converted_tags['country'].present? %>">
                 </div>
               </div>
             
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Valuation</label>
-                  <input type="text" class="form-control input-sm" id="valuation">
+                  <input type="text" class="form-control input-sm" id="valuation" value="<%= converted_tags['valuation'] if converted_tags['country'].present? %>">
                 </div>
               </div>
             
               <div class="col-md-3">
                 <div class="form-group">
                   <label>City</label>
-                  <input type="text" class="form-control input-sm" id="city">
+                  <input type="text" class="form-control input-sm" id="city" value="<%= converted_tags['city'] if converted_tags['country'].present? %>">
                 </div>
               </div>
               
@@ -101,7 +112,7 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label>Content</label>
-                  <textarea class="markdown-data form-control" rows="4"></textarea>
+                  <textarea class="markdown-data form-control" rows="4"><%= first_article if first_article.present? %></textarea>
                 </div>
               </div>
             </div>
