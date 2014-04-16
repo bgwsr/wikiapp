@@ -168,7 +168,7 @@ $('a.picker').click(function(e){
   if ($(this).find('.glyphicon-check').length)
   {
     $(this).parents('.form-group').addClass('has-success');
-    $('#'+key).val( $(this).prev('input').val() );
+    $('#'+key).val( $(this).prev('input,textarea').val() );
   }
 });
 
@@ -334,7 +334,7 @@ function collect_opportunity()
   s_json = s_json + '],';
 /* end of "content":{"tags":[ */
 
-  s_json = s_json + '"body":"'+escape(markdown.toHTML($('#opportunity_comments').val()))+'"}';
+  s_json = s_json + '"body":"'+escape($('#opportunity_comments').val())+'"}';
   s_json = s_json + '}';
   
   return s_json;

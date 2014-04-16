@@ -35,7 +35,10 @@ class Api::V1::SubmissionsController < ApplicationController
       if current_user.present? and current_user.ambassador?
         submission = Submission.find(params[:id])
         if submission.present?
-          submission.status = params[:status] if params[:status].present?
+          if params[:status].present?
+            submission.status = params[:status]
+            SubmissionNotifier.moderated(submission.user.email, params[:status], params[:reason]).deliver
+          end
           if submission.save
             render :json => { :info => submission }, :status => 200 and return
           end

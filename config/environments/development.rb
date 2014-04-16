@@ -7,8 +7,8 @@ Wikiapp::Application.configure do
     address:               'smtp.mandrillapp.com',
     port:                  587,
     domain:                'kaishahero.com',
-    user_name:             'team@kaishahero.com',
-    password:              'fI85wzLqJEurHaenDhPWMA',
+    user_name:             'team@kaishahero.com', # bowei+mandrill@worldstartupreport.com
+    password:              'fI85wzLqJEurHaenDhPWMA', # Z8XdB2DIZBM5SDr2FVthQg
     authentication:        :plain
   }
 

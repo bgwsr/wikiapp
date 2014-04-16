@@ -14,6 +14,7 @@ class ModeratorController < ApplicationController
   end
   
   def verify_entry
+    @markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true, :filter_html => true)
     if current_user.present? and current_user.ambassador?
       if current_user.countries.eql?('all')
         @submissions = Submission.where(silk_identifier: params[:silk_identifier], status: "pending")
