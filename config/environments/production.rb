@@ -72,8 +72,8 @@ Wikiapp::Application.configure do
     address:               'smtp.mandrillapp.com',
     port:                  587,
     domain:                'worldstartupreport.com',
-    user_name:             'bowei+mandrill@worldstartupreport.com',
-    password:              'Z8XdB2DIZBM5SDr2FVthQg',
+    user_name:             ENV['MANDRILL_USER'],
+    password:              ENV['MANDRILL_PASS'],
     authentication:        :plain
   }
 
