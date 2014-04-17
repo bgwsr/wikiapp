@@ -188,9 +188,9 @@ $('#btn_silk_submit').click(function(){
     contentType: 'application/json',
     processData: false,
     data: '{"status": "approved", '
-            +'"category": "'+escape($('#silk_category').val())+'", '
-            +'"silk_identifier": "'+escape($('#silk_identifier').val())+'", '
-            +'"content": "'+escape(markdown.toHTML($('.md-input').val()))+'"}',
+            +'"category": "'+encodeURI($('#silk_category').val())+'", '
+            +'"silk_identifier": "'+encodeURI($('#silk_identifier').val())+'", '
+            +'"content": "'+encodeURI(markdown.toHTML($('.md-input').val()))+'"}',
     complete: function() {
       $('input[type="text"],textarea').val('');
       btn.html(enabled);
@@ -236,7 +236,7 @@ $('#mdl_reject #btn_submit_reason').click(function(){
     dataType: 'json',
     contentType: 'application/json',
     processData: false,
-    data: '{"status": "rejected", "reason": "'+escape($('#body_why').val())+'"}',
+    data: '{"status": "rejected", "reason": "'+encodeURI($('#body_why').val())+'"}',
     complete: function() {
       
     }
@@ -257,15 +257,15 @@ function check_if_edit()
 
 function collect_startup()
 {
-  s_json = '{"collection":"Startups","silk_identifier":"'+escape($('#startup_name').val())+'",'
-  s_json = s_json + '"country": "'+escape($('#ddn_country').val())+'",';
-  s_json = s_json + '"content":{"tags":[{"country": "'+escape($('#ddn_country').val())+'"}';
+  s_json = '{"collection":"Startups","silk_identifier":"'+encodeURI($('#startup_name').val())+'",'
+  s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
+  s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
   s_json = s_json + ',{"category":"startups"}';
-  s_json = s_json + ',{"title":"'+escape($('#startup_name').val())+'"}';
-  s_json = s_json + ',{"year_founded":"'+escape($('#startup_year').val())+'"}';
-  s_json = s_json + ',{"valuation":"'+escape($('#startup_valuation').val())+'"}';
-  s_json = s_json + ',{"city":"'+escape($('#startup_city').val())+'"}],';
-  s_json = s_json + '"body":"'+escape($('#startup_description').val())+'"}';
+  s_json = s_json + ',{"title":"'+encodeURI($('#startup_name').val())+'"}';
+  s_json = s_json + ',{"year_founded":"'+encodeURI($('#startup_year').val())+'"}';
+  s_json = s_json + ',{"valuation":"'+encodeURI($('#startup_valuation').val())+'"}';
+  s_json = s_json + ',{"city":"'+encodeURI($('#startup_city').val())+'"}],';
+  s_json = s_json + '"body":"'+encodeURI($('#startup_description').val())+'"}';
   s_json = s_json + check_if_edit();
   s_json = s_json + '}';
   
@@ -274,13 +274,13 @@ function collect_startup()
 
 function collect_investor()
 {
-  s_json = '{"collection":"Investors","silk_identifier":"'+escape($('#investor_name').val())+'",'
-  s_json = s_json + '"country": "'+escape($('#ddn_country').val())+'",';
-  s_json = s_json + '"content":{"tags":[{"country": "'+escape($('#ddn_country').val())+'"}';
+  s_json = '{"collection":"Investors","silk_identifier":"'+encodeURI($('#investor_name').val())+'",'
+  s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
+  s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
   s_json = s_json + ',{"category":"investors"}';
-  s_json = s_json + ',{"title":"'+escape($('#investor_name').val())+'"}';
-  s_json = s_json + ',{"city":"'+escape($('#investor_city').val())+'"}],';
-  s_json = s_json + '"body":"'+escape($('#investor_description').val())+'"}';
+  s_json = s_json + ',{"title":"'+encodeURI($('#investor_name').val())+'"}';
+  s_json = s_json + ',{"city":"'+encodeURI($('#investor_city').val())+'"}],';
+  s_json = s_json + '"body":"'+encodeURI($('#investor_description').val())+'"}';
   s_json = s_json + check_if_edit();
   s_json = s_json + '}';
   
@@ -289,13 +289,13 @@ function collect_investor()
 
 function collect_community()
 {
-  s_json = '{"collection":"Communities","silk_identifier":"'+escape($('#community_name').val())+'",'
-  s_json = s_json + '"country": "'+escape($('#ddn_country').val())+'",';
-  s_json = s_json + '"content":{"tags":[{"country": "'+escape($('#ddn_country').val())+'"}';
+  s_json = '{"collection":"Communities","silk_identifier":"'+encodeURI($('#community_name').val())+'",'
+  s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
+  s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
   s_json = s_json + ',{"category":"communities"}';
-  s_json = s_json + ',{"title":"'+escape($('#community_name').val())+'"}';
-  s_json = s_json + ',{"city":"'+escape($('#community_city').val())+'"}],';
-  s_json = s_json + '"body":"'+escape($('#community_description').val())+'"}';
+  s_json = s_json + ',{"title":"'+encodeURI($('#community_name').val())+'"}';
+  s_json = s_json + ',{"city":"'+encodeURI($('#community_city').val())+'"}],';
+  s_json = s_json + '"body":"'+encodeURI($('#community_description').val())+'"}';
   s_json = s_json + check_if_edit();
   s_json = s_json + '}';
   
@@ -304,13 +304,13 @@ function collect_community()
 
 function collect_person()
 {
-  s_json = '{"collection":"People","silk_identifier":"'+escape($('#person_name').val())+'",'
-  s_json = s_json + '"country": "'+escape($('#ddn_country').val())+'",';
-  s_json = s_json + '"content":{"tags":[{"country": "'+escape($('#ddn_country').val())+'"}';
+  s_json = '{"collection":"People","silk_identifier":"'+encodeURI($('#person_name').val())+'",'
+  s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
+  s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
   s_json = s_json + ',{"category":"people"}';
-  s_json = s_json + ',{"title":"'+escape($('#person_name').val())+'"}';
-  s_json = s_json + ',{"city":"'+escape($('#person_city').val())+'"}],';
-  s_json = s_json + '"body":"'+escape($('#person_description').val())+'"}';
+  s_json = s_json + ',{"title":"'+encodeURI($('#person_name').val())+'"}';
+  s_json = s_json + ',{"city":"'+encodeURI($('#person_city').val())+'"}],';
+  s_json = s_json + '"body":"'+encodeURI($('#person_description').val())+'"}';
   s_json = s_json + check_if_edit();
   s_json = s_json + '}';
   
@@ -320,22 +320,22 @@ function collect_person()
 var market_saturation = null;
 function tag_label( label )
 {
-  return escape( label )
+  return encodeURI( label )
 }
 function collect_opportunity()
 {
   title = $('#opportunity_name').val()+' - '+$('#ddn_country').val();
-  s_json = '{"collection":"Opportunities","silk_identifier":"'+escape(title)+'",'
-  s_json = s_json + '"country": "'+escape($('#ddn_country').val())+'",';
+  s_json = '{"collection":"Opportunities","silk_identifier":"'+encodeURI(title)+'",'
+  s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
   s_json = s_json + '"content":{"tags":[';
   
   /* usual tags */
-  s_json = s_json + '{"country": "'+escape($('#ddn_country').val())+'"},';
+  s_json = s_json + '{"country": "'+encodeURI($('#ddn_country').val())+'"},';
   s_json = s_json + '{"category":"opportunities"},';
   
 /* category specific tags */
-  s_json = s_json + '{"Local%20Market%20Leader": "'+escape($('#local_leader_name').val())+'"},';
-  s_json = s_json + '{"Local%20Players":"'+escape($('#local_players').val())+'"},';
+  s_json = s_json + '{"Local%20Market%20Leader": "'+encodeURI($('#local_leader_name').val())+'"},';
+  s_json = s_json + '{"Local%20Players":"'+encodeURI($('#local_players').val())+'"},';
   
   market_saturation = new SaturationTicker().init({
     value: $('#market_saturation').val()
@@ -352,7 +352,7 @@ function collect_opportunity()
   s_json = s_json + '],';
 /* end of "content":{"tags":[ */
 
-  s_json = s_json + '"body":"'+escape($('#opportunity_comments').val())+'"}';
+  s_json = s_json + '"body":"'+encodeURI($('#opportunity_comments').val())+'"}';
   s_json = s_json + check_if_edit();
   s_json = s_json + '}';
   
@@ -371,7 +371,7 @@ $('button[data-reject-id]').click(function(){
 
 var SaturationTicker = function() {
   this.value = '';
-  this.color = escape('http://i.imgur.com/OKqBu1h.png');
+  this.color = encodeURI('http://i.imgur.com/OKqBu1h.png');
   
   this.init = function(options) {
     if (typeof options.value != 'undefined')
@@ -386,23 +386,23 @@ var SaturationTicker = function() {
     {
       case 4:
         this.value = 'Saturated';
-        this.color = escape('http://i.imgur.com/iZIQQ9r.png');
+        this.color = encodeURI('http://i.imgur.com/iZIQQ9r.png');
         break;
       case 3:
         this.value = 'Mature';
-        this.color = escape('http://i.imgur.com/Xt6hcOv.png');
+        this.color = encodeURI('http://i.imgur.com/Xt6hcOv.png');
         break;
       case 2:
-        this.value = escape('Semi-mature');
-        this.color = escape('http://i.imgur.com/Wqp7b5o.png');
+        this.value = encodeURI('Semi-mature');
+        this.color = encodeURI('http://i.imgur.com/Wqp7b5o.png');
         break;
       case 1:
         this.value = 'Infancy';
-        this.color = escape('http://i.imgur.com/3n1OCMq.png');
+        this.color = encodeURI('http://i.imgur.com/3n1OCMq.png');
         break;
       case 0:
-        this.value = escape('Non-existent');
-        this.color = escape('http://i.imgur.com/OKqBu1h.png');
+        this.value = encodeURI('Non-existent');
+        this.color = encodeURI('http://i.imgur.com/OKqBu1h.png');
         break;
     }
   }
