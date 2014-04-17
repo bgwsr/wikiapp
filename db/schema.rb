@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140412152145) do
+ActiveRecord::Schema.define(version: 20140416121345) do
+
+  create_table "archives", force: true do |t|
+    t.string   "silk_identifier"
+    t.string   "country"
+    t.integer  "user_id"
+    t.integer  "moderator_id"
+    t.string   "status"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -35,7 +46,6 @@ ActiveRecord::Schema.define(version: 20140412152145) do
     t.string   "country",         limit: 200,                     null: false
     t.integer  "user_id"
     t.integer  "moderator_id"
-    t.boolean  "uploaded",                    default: false
     t.string   "status",          limit: 30,  default: "pending"
     t.text     "content"
     t.datetime "created_at"

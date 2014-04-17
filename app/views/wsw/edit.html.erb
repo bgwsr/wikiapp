@@ -1,0 +1,113 @@
+<input type="hidden" id="wsw_id" name="wsw_id" value="<%= @submission.id %>">
+  <div class="row form" id="starting_point">
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+      <p class="lead">
+        Hi <%= current_user.identities.first.first_name %>!
+      </p>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Editing "<%= @submission.silk_identifier %>"</h3>
+        </div>
+        <div class="panel-body">
+          <%-
+            converted_tags = Hash.new
+            available_tags = []
+
+            title = @submission.silk_identifier
+            contents = ActiveSupport::JSON.decode(@submission.content)
+            
+            html_body = ''
+            if contents["comments"].present?
+              html_body = simple_format(URI.decode(contents["comments"]))
+            end
+            
+            tags = contents["tags"]
+            converted_tags = Hash.new
+            available_tags = ['category']
+
+            tags.each do |tag|
+              tag.each_key do |key|
+                converted_tags[key] = URI.decode(tag[key])
+                available_tags.push key unless key.eql?('category')
+              end
+            end
+            
+            article = contents["body"]
+          %>
+          <div class="callout callout-info">
+            <h4><%= title %></h4>
+            <input type="hidden" id="hdn_category" name="hdn_category" value="<%= converted_tags['category'].singularize %>">
+            
+            <div class="row">
+              
+              <% available_tags.each_with_index.reject {|tag,i| ["title","category","Mobile%20Market%20Saturation%20Color","Market%20Saturation%20Color"].include?(tag)}.each do |tag,i| %>
+              <%- if URI.decode(tag).titleize.eql?('Local Players') %>
+              <div class="clearfix"></div>
+              <div class="col-md-12">
+              <%- else %>
+              <div class="col-md-<%= ["opportunities"].include?(converted_tags['category']) ? 4 : 3 %>">
+              <%- end %>
+                <div class="form-group">
+                  <label><%= URI.decode(tag).titleize %></label>
+                  <%- if ["Local Players"].include?(URI.decode(tag).titleize) %>
+                  <textarea rows="4" class="form-control" id="<%= converted_tags['category'].singularize + "_" + URI.decode(tag).downcase.gsub(" ","_") %>"><%= converted_tags[tag] if converted_tags[tag].present? %></textarea>
+                  
+                  <%- else %>
+                  <input type="text" class="form-control input-sm" id="<%= converted_tags['category'].singularize + "_" + URI.decode(tag).downcase.gsub(" ","_") %>" value="<%= converted_tags[tag] if converted_tags[tag].present? %>">
+                  
+                  <%- end %>
+                </div>
+              </div>
+              <% end %>
+              
+            </div>
+            
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Content</label>
+                  <textarea class="markdown-data form-control" id="<%= converted_tags['category'].singularize %>_description" rows="4"><%= article %></textarea>
+                </div>
+              </div>
+            </div>
+            
+            <div class="text-right">
+              <a href="#" class="btn btn-info btn-lg" id="btn_submit_<%= converted_tags['category'].singularize %>" class="btn btn-primary" data-disable-with="Please wait...">Save Changes <i class="glyphicon glyphicon-download"></i></a>
+            </div>
+          </div>
+
+        </div>
+                
+        <div class="panel-footer">
+          <div class="text-right">
+            <%= link_to destroy_user_session_url, method: :delete, class: "text-right" do %>
+              Sign Out <i class="glyphicon glyphicon-log-out"></i>
+            <%- end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<div class="modal fade" id="mdl_reject">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Reject Submission</h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="data_id" value="">
+        <div class="form-group">
+          <label for="body_why">Why?</label>
+          <textarea class="form-control" rows="5" id="body_why"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_submit_reason" type="button" class="btn btn-primary" data-dismiss="modal"><i class="glyphicon glyphicon-send"></i> Send</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

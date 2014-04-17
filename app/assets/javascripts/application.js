@@ -108,7 +108,6 @@ $('[id*="btn_submit_"]').click(function(e){
   e.preventDefault();
   $('.form').addClass('hide');
   s_json = '';
-  
   if (data.collection == 'Startups')
   {
     s_json = collect_startup();
@@ -134,6 +133,11 @@ $('[id*="btn_submit_"]').click(function(e){
     s_json = collect_opportunity();
   }
   
+  if ( $('#hdn_category').length )
+  {
+    s_json = eval("collect_"+$('#hdn_category').val()+"()");
+  }
+  
   if (s_json.length)
   {
     $.ajax({
@@ -144,7 +148,7 @@ $('[id*="btn_submit_"]').click(function(e){
       processData: false,
       data: s_json,
       success: function(o_return, s_status, o_xhr) {
-        console.log(o_return);
+        location.href = "/";
       }
     });
   }
@@ -241,6 +245,16 @@ $('#mdl_reject #btn_submit_reason').click(function(){
   $('#mdl_reject #body_why').val("");
 });
 
+function check_if_edit()
+{
+  var r = '';
+  if ( $('#wsw_id').length && $('#wsw_id').val() != "" )
+  {
+    r = ',"id":"'+$('#wsw_id').val()+'"';
+  }
+  return r;
+}
+
 function collect_startup()
 {
   s_json = '{"collection":"Startups","silk_identifier":"'+escape($('#startup_name').val())+'",'
@@ -252,6 +266,7 @@ function collect_startup()
   s_json = s_json + ',{"valuation":"'+escape($('#startup_valuation').val())+'"}';
   s_json = s_json + ',{"city":"'+escape($('#startup_city').val())+'"}],';
   s_json = s_json + '"body":"'+escape($('#startup_description').val())+'"}';
+  s_json = s_json + check_if_edit();
   s_json = s_json + '}';
   
   return s_json;
@@ -266,6 +281,7 @@ function collect_investor()
   s_json = s_json + ',{"title":"'+escape($('#investor_name').val())+'"}';
   s_json = s_json + ',{"city":"'+escape($('#investor_city').val())+'"}],';
   s_json = s_json + '"body":"'+escape($('#investor_description').val())+'"}';
+  s_json = s_json + check_if_edit();
   s_json = s_json + '}';
   
   return s_json;
@@ -280,6 +296,7 @@ function collect_community()
   s_json = s_json + ',{"title":"'+escape($('#community_name').val())+'"}';
   s_json = s_json + ',{"city":"'+escape($('#community_city').val())+'"}],';
   s_json = s_json + '"body":"'+escape($('#community_description').val())+'"}';
+  s_json = s_json + check_if_edit();
   s_json = s_json + '}';
   
   return s_json;
@@ -294,6 +311,7 @@ function collect_person()
   s_json = s_json + ',{"title":"'+escape($('#person_name').val())+'"}';
   s_json = s_json + ',{"city":"'+escape($('#person_city').val())+'"}],';
   s_json = s_json + '"body":"'+escape($('#person_description').val())+'"}';
+  s_json = s_json + check_if_edit();
   s_json = s_json + '}';
   
   return s_json;
@@ -335,6 +353,7 @@ function collect_opportunity()
 /* end of "content":{"tags":[ */
 
   s_json = s_json + '"body":"'+escape($('#opportunity_comments').val())+'"}';
+  s_json = s_json + check_if_edit();
   s_json = s_json + '}';
   
   return s_json;

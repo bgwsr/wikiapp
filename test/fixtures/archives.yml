@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  silk_identifier: MyString
+  country: MyString
+  user_id: 
+  moderator_id: 1
+  status: MyString
+  content: MyText
+
+two:
+  silk_identifier: MyString
+  country: MyString
+  user_id: 
+  moderator_id: 1
+  status: MyString
+  content: MyText
