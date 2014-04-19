@@ -18,6 +18,9 @@
 //= require autoblend
 //= require_tree .
 
+$(document).ready(function(){
+
+});
 
 window.location.hash = "";
 var data = {collection: '', country: ''};
