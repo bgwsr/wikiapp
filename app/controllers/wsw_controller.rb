@@ -12,7 +12,7 @@ class WswController < ApplicationController
       if decrypt(key) == params[:a]
         @submission = Archive.find(params[:a])
       end
-    else
+    elsif params[:silk_identifier].present?
       @submission = Archive.where(silk_identifier: URI.decode(params[:silk_identifier]), status: "submitted").first
     end
     render "edit" and return if @submission.present?
