@@ -151,7 +151,7 @@ class Api::V1::SubmissionsController < ApplicationController
     s_silk_page = s_silk_page + '    </div>'
     s_silk_page = s_silk_page + '    <div class="layout content">'
     s_silk_page = s_silk_page + '      '
-    s_silk_page = s_silk_page + '      <div id="product-bar" style="display:block;"><a href="'+page_edit_url(edit: id)+'" class="toolbar-button action edit-page" style="color: #ffffff;">Edit Page</a></div>'
+    s_silk_page = s_silk_page + '      <div id="product-bar" style="display:block;"><a href="'+page_edit_url(k: encrypt(id), a: id)+'" class="toolbar-button action edit-page" style="color: #ffffff;">Edit Page</a></div>'
     s_silk_page = s_silk_page + '      '+tags_html
     s_silk_page = s_silk_page + '      '+CGI.unescapeHTML(content.gsub("\n",""))
     s_silk_page = s_silk_page + '      '
