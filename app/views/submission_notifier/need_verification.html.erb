@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+Hi,
+
+A user has recently submitted an article for the wiki page.
+
+Title: <%= @article.silk_identifier %>
+Submitted by: <%= @article.user.email %>
+Body:
+<%= simple_format(@body) %>
+
+To approve the submission, click or copy paste the url below:
+<%= @quick_accept_url %>
+
+Thanks!
+  </body>
+</html>
