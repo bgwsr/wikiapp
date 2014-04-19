@@ -3,7 +3,7 @@ Wikiapp::Application.routes.draw do
   root 'wsw#index'
   
   get '/moderator', to: "moderator#index"
-  get '/verify-entry', to: "moderator#verify_entry"
+  get '/verify-entry', to: "moderator#verify_entry", as: "page_verify"
   get '/edit-entry/(:silk_identifier)', to: "wsw#edit", as: "page_edit"
   
   devise_for :users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }

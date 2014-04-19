@@ -29,6 +29,17 @@ $('[data-target="choose_country"]').click(function(e){
   $('#choose_country').removeClass('hide');
 });
 
+$('[data-target="edit_page"]').click(function(e){
+  e.preventDefault();
+  $('.form').addClass('hide');
+  $('#thanks').addClass('hide');
+  $('#edit_page').removeClass('hide');
+});
+
+$('#btn_edit_page').click(function(){
+  location.href='/edit-entry/'+encodeURI($('#edit_page #silk_identifier').val());
+});
+
 
 $('[data-target="add_startup"]').click(function(e){
   e.preventDefault();
@@ -190,7 +201,7 @@ $('#btn_silk_submit').click(function(){
     data: '{"status": "approved", '
             +'"category": "'+encodeURI($('#silk_category').val())+'", '
             +'"silk_identifier": "'+encodeURI($('#silk_identifier').val())+'", '
-            +'"content": "'+encodeURI(markdown.toHTML($('.md-input').val()))+'"}',
+            +'"content": "'+encodeURI($('.md-input').val())+'"}',
     complete: function() {
       $('input[type="text"],textarea').val('');
       btn.html(enabled);

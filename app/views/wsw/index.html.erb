@@ -1,5 +1,5 @@
 <div class="page-header text-center">
-  <h1>Hello World!</h1>
+  <h1>World Startup Wiki Submission Tool</h1>
 </div>
 
 <div class="text-center">
@@ -9,7 +9,7 @@
   </p>
 
   <div class="row form" id="starting_point">
-    <div class="col-xs-12 col-md-6 col-md-offset-3">
+    <div class="col-xs-12 col-md-4 col-md-offset-4">
       <div class="panel panel-primary">
         <div class="panel-body">
           <p>
@@ -17,6 +17,18 @@
               <i class="glyphicon glyphicon-plus-sign"></i> I want to add to WSW
             </a>
           </p>
+        <%- if current_user.ambassador %>
+          <p>
+            <a href="#" class="btn btn-block btn-success btn-lg" data-target="edit_page">
+              <i class="glyphicon glyphicon-edit"></i> I want to edit wiki pages
+            </a>
+          </p>
+          <p>
+            <%= link_to moderator_url, class: "btn btn-block btn-warning btn-lg" do %>
+              <i class="glyphicon glyphicon-check"></i> I want to moderate submissions
+            <% end %>
+          </p>
+        <%- end %>
         </div>
       </div>
     </div>
@@ -28,32 +40,34 @@
     <div class="col-md-6 col-md-offset-3">
       <div>
         <div class="form-group">
+          <label>Step 1:</label>
           <%= render 'shared/country_select' %>
         </div>
         
-        <div class="form-group row">
-          
-          <div class="input-group col-md-4">
-            <a href="#" class="btn btn-info btn-block" data-target="add_startup"><i class="glyphicon glyphicon-chevron-right"></i> Startup</a>
+        <br>
+        
+        <div class="form-group">
+          <label>Step 2:</label>
+          <div class="row">
+            <div class="input-group col-md-6">
+              <a href="#" class="btn btn-info btn-lg btn-block" data-target="add_startup"><i class="glyphicon glyphicon-chevron-right"></i> Startup</a>
+            </div>
+            
+            <div class="input-group col-md-6">
+              <a href="#" class="btn btn-info btn-lg btn-block" data-target="add_investor"><i class="glyphicon glyphicon-chevron-right"></i> Investor</a>
+            </div>
           </div>
-          
-          <div class="input-group col-md-4">
-            <a href="#" class="btn btn-info btn-block" data-target="add_investor"><i class="glyphicon glyphicon-chevron-right"></i> Investor</a>
-          </div>
-
-          <div class="input-group col-md-4">
-            <a href="#" class="btn btn-info btn-block" data-target="add_community"><i class="glyphicon glyphicon-chevron-right"></i> Community</a>
-          </div>
-
         </div>
 
         
         <div class="form-group row">
-          <div class="input-group col-md-4">
-            <a href="#" class="btn btn-info btn-block" data-target="add_people"><i class="glyphicon glyphicon-chevron-right"></i> People</a>
+
+          <div class="input-group col-md-6">
+            <a href="#" class="btn btn-info btn-lg btn-block" data-target="add_community"><i class="glyphicon glyphicon-chevron-right"></i> Community</a>
           </div>
-          <div class="input-group col-md-4">
-            <a href="#" class="btn btn-info btn-block" data-target="add_opportunity"><i class="glyphicon glyphicon-chevron-right"></i> Opportunity</a>
+          
+          <div class="input-group col-md-6">
+            <a href="#" class="btn btn-info btn-lg btn-block" data-target="add_people"><i class="glyphicon glyphicon-chevron-right"></i> People</a>
           </div>
 
         </div>
@@ -61,6 +75,23 @@
     </div>
   </div>
   <!-- end choose_country -->
+  
+
+  <!-- edit_page -->
+  <div class="text-left hide form" id="edit_page">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="input-group input-group-lg">
+          <input type="text" id="silk_identifier" class="form-control">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-primary" id="btn_edit_page">Edit</button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <br>
+  </div>
+  <!-- end edit_page -->
   
   <!-- add_startup -->
   <div class="row text-left hide form" id="add_startup">

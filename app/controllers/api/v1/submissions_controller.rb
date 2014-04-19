@@ -25,8 +25,7 @@ class Api::V1::SubmissionsController < ApplicationController
         end
       end
       s.content = contents.to_json
-      puts "\n\n\n\n#{contents}\n\n\n\n\n\n"
-      puts "\n\n\n\n\nTrying to insert\n\n\n\n\n\n"
+
       if s.save
         recipient = User.select('GROUP_CONCAT(email) emails').where("countries = 'all' OR countries = ? OR countries LIKE ? OR countries LIKE ?", "#{s.country}", "#{s.country},%", "%,#{s.country}")
         if recipient.present?
@@ -79,6 +78,7 @@ class Api::V1::SubmissionsController < ApplicationController
       unless silk_content(submissions.first.id, silk_identifier, params[:category], contents["tags"], markdown.render(body))
         render :json => { :error => "Houston we have a problem" }, status: :unprocessable_entity and return
       else
+        archive.status = "submitted"
         if archive.save
           submissions.destroy_all
         end
@@ -102,6 +102,9 @@ class Api::V1::SubmissionsController < ApplicationController
     if article.present?
       if decrypt(key).eql?(article.id.to_s)
         if article.update(status: "approved")
+          archive = Archive.new(article.attributes)
+          archive.status = "submitted"
+          archive.save
           SubmissionNotifier.approved(article.user.email, article.silk_identifier).deliver
           redirect_to root_url, alert: "The submission has been approved. Thank you!" and return
         end
