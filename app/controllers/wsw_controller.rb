@@ -6,7 +6,7 @@ class WswController < ApplicationController
   end
 
   def edit
-  
+    redirect_to new_user_session_url and return unless current_user.present?
     if params[:k].present? && params[:a].present?
       key = URI.decode(params[:k])
       if decrypt(key) == params[:a]

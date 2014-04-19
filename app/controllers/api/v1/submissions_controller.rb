@@ -3,11 +3,26 @@ require 'custom/silker'
 require 'redcarpet/compat'
 class Api::V1::SubmissionsController < ApplicationController
   include ApplicationHelper
+  
+  def silker
+    silk_sid = Silker.authenticate( ENV['SILK_EMAIL'], ENV['SILK_PASSWORD'] )
+    silker = Silker.new( silk_sid, ENV['SILK_SITE'] )
+    article = silker.get_private_page_html(URI.encode(params[:silk_identifier]))
+
+    render :json => { :article => article }, :status => 200 and return
+  end
 
   def create
     if current_user.present?
       if params[:id].present?
-        s = Submission.find(params[:id])
+        s = Submission.where(params[:id])
+        if s.present?
+          s = s.first
+        else
+          archive = Archive.find(params[:id])
+          s = Submission.new(archive.attributes)
+          s.save
+        end
         s.status = "pending"
       else
         s = Submission.new
@@ -67,6 +82,7 @@ class Api::V1::SubmissionsController < ApplicationController
     if current_user.present? and current_user.ambassador?
       silk_identifier = URI.decode(params[:silk_identifier])
       submissions = Submission.where(silk_identifier: silk_identifier)
+      Archive.delete_all(id: submissions.first.id)
       archive = Archive.new(submissions.first.attributes)
       contents = ActiveSupport::JSON.decode(archive.content)
       body = URI.decode(params[:content])
@@ -75,7 +91,7 @@ class Api::V1::SubmissionsController < ApplicationController
       
       markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true, :filter_html => true)
       
-      unless silk_content(submissions.first.id, silk_identifier, params[:category], contents["tags"], markdown.render(body))
+      unless silk_content(submissions.first.id, silk_identifier, submissions.first.country, params[:category], contents["tags"], markdown.render(body))
         render :json => { :error => "Houston we have a problem" }, status: :unprocessable_entity and return
       else
         archive.status = "submitted"
@@ -123,11 +139,17 @@ class Api::V1::SubmissionsController < ApplicationController
   end
   
   private
-  def silk_content(id, page, category, tags, content)
-    silk_sid = Silker.authenticate( ENV['SILK_EMAIL'], ENV['SILK_PASSWORD'] )
-    silker = Silker.new( silk_sid, ENV['SILK_SITE'] )
-
+  def tag_builder( country, category, tags )
     tags_html = '<div style="margin-bottom: 20px;">'
+        
+    tags_html = tags_html + '<div style="display: inline-block; width: 200px; font-weight: 700;">'
+    tags_html = tags_html + '<a href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/country">Country</a>'
+    tags_html = tags_html + '</div>'
+
+    tags_html = tags_html + '<div style="display: inline-block; width: 300px;">'
+    tags_html = tags_html + '<a data-tag-uri="http://'+ENV['SILK_SITE']+'.silk.co/tag/country" href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/country/filter/enum/country/'+country+'">' + country.titleize + '</a>'
+    tags_html = tags_html + '</div>'
+    
     tags.each_with_index do |tag,index|
       tag.each do |key,value|
         
@@ -141,18 +163,36 @@ class Api::V1::SubmissionsController < ApplicationController
         
       end
     end
-    tags_html = tags_html + "</div>"
-    
+    tags_html + "</div>"
+  end
+  
+  def style_builder
+    style = 'font-size: 16px;'
+    style = style + 'font-family: proxima-nova, Arial, Helvetica, sans-serif;'
+    style = style + 'letter-spacing: 1px;'
+    style = style + 'font-weight: bold;'
+    style = style + 'color: #555;'
+    style
+  end
+  
+  def silk_content(id, page, country, category, tags, content)
+    silk_sid = ' '
+    while silk_sid.nil? || silk_sid.include?(" ")
+      silk_sid = Silker.authenticate( ENV['SILK_EMAIL'], ENV['SILK_PASSWORD'] )
+    end
+    silker = Silker.new( silk_sid, ENV['SILK_SITE'] )
+    data_country,data_collection,data_title = page.split(":")
     s_silk_page = ''
-    s_silk_page = s_silk_page + '<article data-article="" data-format="1" data-title="'+page+'" data-tag-context="/tag/'+URI.decode(category.downcase)+'">'
+    
+    s_silk_page = s_silk_page + '<article data-article="" data-format="1" data-title="'+data_title+'" data-tag-context="/tag/'+URI.decode(category.downcase)+'">'
     s_silk_page = s_silk_page + '  <section class="body">'
     s_silk_page = s_silk_page + '    <div class="layout meta">'
-    s_silk_page = s_silk_page + '          '+CGI.unescapeHTML(page)
+    s_silk_page = s_silk_page + '      <h1 style="'+style_builder+'">'+CGI.unescapeHTML(data_title).upcase+'</h1>'
     s_silk_page = s_silk_page + '    </div>'
     s_silk_page = s_silk_page + '    <div class="layout content">'
     s_silk_page = s_silk_page + '      '
-    s_silk_page = s_silk_page + '      <div id="product-bar" style="display:block;"><a href="'+page_edit_url(k: encrypt(id), a: id)+'" class="toolbar-button action edit-page" style="color: #ffffff;">Edit Page</a></div>'
-    s_silk_page = s_silk_page + '      '+tags_html
+    s_silk_page = s_silk_page + '      <div id="product-bar" style="display:block; width:1px; height:1px; float:right; overflow: visible;"><a href="'+page_edit_url(key: encrypt(id), silk_identifier: URI.encode(page))+'" class="toolbar-button action edit-page" style="color: #ffffff; width: 100px;">Edit Page</a></div>'
+    s_silk_page = s_silk_page + '      ' + tag_builder(country, category, tags)
     s_silk_page = s_silk_page + '      '+CGI.unescapeHTML(content.gsub("\n",""))
     s_silk_page = s_silk_page + '      '
     s_silk_page = s_silk_page + '    </div>'
@@ -161,7 +201,12 @@ class Api::V1::SubmissionsController < ApplicationController
     s_silk_page = s_silk_page + '</article>'
     
     puts s_silk_page
-    
+#  silk_sid = Silker.authenticate( 'gerard@nerubia.com', 'passw0rt' )
+#  silker = Silker.new(silk_sid, 'nerubia')
+#  a = ''
+#  silker.create_or_update_page('Nerubia - Philippines', a)
+#
+    puts "\n\nsilker.create_or_update_page( '#{URI.encode(page)}', '#{s_silk_page}' )\n\n"
     silk_result = silker.create_or_update_page( URI.encode(page), s_silk_page )
     puts "Response from Silk API: #{!silk_result.nil?}"
     !silk_result.nil?

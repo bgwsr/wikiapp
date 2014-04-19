@@ -29,11 +29,11 @@
                 city = URI.decode(tag["city"]) if tag["city"].present?
               end
               
-              title = submission.silk_identifier
+              country,collection,title = submission.silk_identifier.split(':')
               article = contents["body"]
           %>
             <a class="list-group-item" href="/verify-entry?silk_identifier=<%= submission.silk_identifier %>">
-              <h6><%= title %> <small>by <%= submission.user.identities.first.first_name %></small> <i class="text-primary pull-right glyphicon glyphicon-chevron-right"></i></h6>
+              <h6><%= title %> <small>A <%= collection.singularize %> in the <%= country %> &mdash; <%= submission.user.email %></small> <i class="text-primary pull-right glyphicon glyphicon-chevron-right"></i></h6>
             </a>
           <%- end %>
           </div>

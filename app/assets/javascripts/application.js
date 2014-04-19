@@ -23,7 +23,8 @@ $(document).ready(function(){
 });
 
 window.location.hash = "";
-var data = {collection: '', country: ''};
+var data = {collection: '', country: '', silk_identifier: ''};
+var target_collection = '';
 
 $('[data-target="choose_country"]').click(function(e){
   e.preventDefault();
@@ -44,78 +45,36 @@ $('#btn_edit_page').click(function(){
 });
 
 
-$('[data-target="add_startup"]').click(function(e){
+$('[data-target*="add_"]').click(function(e){
   e.preventDefault();
-  if ( $('#ddn_country').val().length == 0 )
+  
+  switch ( $(this).attr('data-target') )
   {
-    alert( "Please select a country" );
+    case 'add_startup':
+      data.collection = 'Startups';
+      break;
+
+    case 'add_investor':
+      data.collection = 'Investors';
+      break;
+
+    case 'add_community':
+      data.collection = 'Communities';
+      break;
+
+    case 'add_people':
+      data.collection = 'People';
+      break;
+  }
+  
+  if (silk_identifier() == false)
+  {
     return false;
   }
-  $('.form').addClass('hide');
-  data.collection = 'Startups';
-  data.country = $('#ddn_country').val();
-  $('#choose_country,#thanks').addClass('hide');
-  $('#add_startup').removeClass('hide');
-});
-
-
-$('[data-target="add_investor"]').click(function(e){
-  e.preventDefault();
-  if ( $('#ddn_country').val().length == 0 )
-  {
-    alert( "Please select a country" );
-    return false;
-  }
-  $('.form').addClass('hide');
-  data.collection = 'Investors';
-  data.country = $('#ddn_country').val();
-  $('#choose_country,#thanks').addClass('hide');
-  $('#add_investor').removeClass('hide');
-});
-
-
-$('[data-target="add_community"]').click(function(e){
-  e.preventDefault();
-  if ( $('#ddn_country').val().length == 0 )
-  {
-    alert( "Please select a country" );
-    return false;
-  }
-  $('.form').addClass('hide');
-  data.collection = 'Communities';
-  data.country = $('#ddn_country').val();
-  $('#choose_country,#thanks').addClass('hide');
-  $('#add_community').removeClass('hide');
-});
-
-
-$('[data-target="add_people"]').click(function(e){
-  e.preventDefault();
-  if ( $('#ddn_country').val().length == 0 )
-  {
-    alert( "Please select a country" );
-    return false;
-  }
-  $('.form').addClass('hide');
-  data.collection = 'People';
-  data.country = $('#ddn_country').val();
-  $('#choose_country,#thanks').addClass('hide');
-  $('#add_people').removeClass('hide');
-});
-
-
-$('[data-target="add_opportunity"]').click(function(e){
-  e.preventDefault();
-  if ( $('#ddn_country').val().length == 0 )
-  {
-    alert( "Please select a country" );
-    return false;
-  }
-  $('.form').addClass('hide');
-  data.collection = 'Opportunities';
-  data.country = $('#ddn_country').val();
-  $('#choose_country,#thanks').addClass('hide');
-  $('#add_opportunity').removeClass('hide');
+  
+  data.country = get_country();
+  
+  target_collection = '#'+$(this).attr('data-target');
 });
 
 $('[id*="btn_submit_"]').click(function(e){
@@ -269,19 +228,56 @@ function check_if_edit()
   return r;
 }
 
-function silk_identifier( title )
+function silk_identifier()
 {
-  return encodeURI(title + " - " + $('#ddn_country').val());
+  error = '';
+  if ( $('#page_name').val() == '' && get_country() == '' )
+  {
+    error = 'Please select a country and provide a name to your contribution';
+  }
+  else if ( $('#page_name').val() == '' )
+  {
+    error = 'Please provide a name to your contribution';
+  }
+  else if ( get_country() == '' )
+  {
+    error = 'Please select a country';
+  }
+  
+  if (error.length)
+  {
+    alert(error);
+    return false;
+  }
+  else
+  {
+    $('[data-target*="add_"]').addClass('disabled');
+    silk_identifier = encodeURI(get_country()+":"+data.collection+":"+$('#page_name').val());
+    $.get("/api/submissions/silker/"+silk_identifier, function(a){
+      data.silk_identifier = a.article;
+      if (data.silk_identifier == null)
+      {
+        data.silk_identifier = silk_identifier;
+        $('.form').addClass('hide');
+        $(target_collection).removeClass('hide');
+      }
+      else
+      {
+        location.href = "/edit-entry/"+silk_identifier;
+      }
+      $('#choose_country,#thanks').addClass('hide');
+    });
+    return silk_identifier;
+  }
 }
 
 function collect_startup()
 {
-  s_json = '{"collection":"Startups","silk_identifier":"'+silk_identifier($('#startup_name').val())+'",'
-  s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
-  s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
-  s_json = s_json + ',{"category":"startups"}';
-  s_json = s_json + ',{"title":"'+encodeURI($('#startup_name').val())+'"}';
-  s_json = s_json + ',{"year_founded":"'+encodeURI($('#startup_year').val())+'"}';
+  s_json = '{"collection":"Startups","silk_identifier":"'+data.silk_identifier+'",'
+  s_json = s_json + '"country": "'+encodeURI(get_country())+'",';
+  s_json = s_json + '"content":{"tags":[{"category":"startups"}';
+  s_json = s_json + ',{"name":"'+encodeURI($('#page_name').val())+'"}';
+  s_json = s_json + ',{"year_founded":"'+encodeURI($('#startup_year_founded').val())+'"}';
   s_json = s_json + ',{"valuation":"'+encodeURI($('#startup_valuation').val())+'"}';
   s_json = s_json + ',{"city":"'+encodeURI($('#startup_city').val())+'"}],';
   s_json = s_json + '"body":"'+encodeURI($('#startup_description').val())+'"}';
@@ -293,11 +289,10 @@ function collect_startup()
 
 function collect_investor()
 {
-  s_json = '{"collection":"Investors","silk_identifier":"'+silk_identifier($('#investor_name').val())+'",'
-  s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
-  s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
-  s_json = s_json + ',{"category":"investors"}';
-  s_json = s_json + ',{"title":"'+encodeURI($('#investor_name').val())+'"}';
+  s_json = '{"collection":"Investors","silk_identifier":"'+data.silk_identifier+'",'
+  s_json = s_json + '"country": "'+encodeURI(get_country())+'",';
+  s_json = s_json + '"content":{"tags":[{"category":"investors"}';
+  s_json = s_json + ',{"name":"'+encodeURI($('#page_name').val())+'"}';
   s_json = s_json + ',{"city":"'+encodeURI($('#investor_city').val())+'"}],';
   s_json = s_json + '"body":"'+encodeURI($('#investor_description').val())+'"}';
   s_json = s_json + check_if_edit();
@@ -308,11 +303,10 @@ function collect_investor()
 
 function collect_community()
 {
-  s_json = '{"collection":"Communities","silk_identifier":"'+silk_identifier($('#community_name').val())+'",'
-  s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
-  s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
-  s_json = s_json + ',{"category":"communities"}';
-  s_json = s_json + ',{"title":"'+encodeURI($('#community_name').val())+'"}';
+  s_json = '{"collection":"Communities","silk_identifier":"'+data.silk_identifier+'",'
+  s_json = s_json + '"country": "'+encodeURI(get_country())+'",';
+  s_json = s_json + '"content":{"tags":[{"category":"communities"}';
+  s_json = s_json + ',{"name":"'+encodeURI($('#page_name').val())+'"}';
   s_json = s_json + ',{"city":"'+encodeURI($('#community_city').val())+'"}],';
   s_json = s_json + '"body":"'+encodeURI($('#community_description').val())+'"}';
   s_json = s_json + check_if_edit();
@@ -323,11 +317,10 @@ function collect_community()
 
 function collect_person()
 {
-  s_json = '{"collection":"People","silk_identifier":"'+silk_identifier($('#person_name').val())+'",'
-  s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
-  s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
-  s_json = s_json + ',{"category":"people"}';
-  s_json = s_json + ',{"title":"'+encodeURI($('#person_name').val())+'"}';
+  s_json = '{"collection":"People","silk_identifier":"'+data.silk_identifier+'",'
+  s_json = s_json + '"country": "'+encodeURI(get_country())+'",';
+  s_json = s_json + '"content":{"tags":[{"category":"people"}';
+  s_json = s_json + ',{"name":"'+encodeURI($('#page_name').val())+'"}';
   s_json = s_json + ',{"city":"'+encodeURI($('#person_city').val())+'"}],';
   s_json = s_json + '"body":"'+encodeURI($('#person_description').val())+'"}';
   s_json = s_json + check_if_edit();
@@ -341,15 +334,23 @@ function tag_label( label )
 {
   return encodeURI( label )
 }
+function get_country()
+{
+  country = '';
+  if ( $('#country').length )
+  {
+    country = $('#country').val();
+  }
+  return country;
+}
 function collect_opportunity()
 {
-  title = $('#opportunity_name').val()+' - '+$('#ddn_country').val();
+  title = $('#opportunity_name').val()+' - '+get_country();
   s_json = '{"collection":"Opportunities","silk_identifier":"'+encodeURI(title)+'",'
-  s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
+  s_json = s_json + '"country": "'+encodeURI(get_country())+'",';
   s_json = s_json + '"content":{"tags":[';
   
   /* usual tags */
-  s_json = s_json + '{"country": "'+encodeURI($('#ddn_country').val())+'"},';
   s_json = s_json + '{"category":"opportunities"},';
   
 /* category specific tags */

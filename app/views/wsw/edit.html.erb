@@ -40,7 +40,10 @@
             
             <div class="row">
               
-              <% available_tags.each_with_index.reject {|tag,i| ["title","category","Mobile%20Market%20Saturation%20Color","Market%20Saturation%20Color"].include?(tag)}.each do |tag,i| %>
+              <% available_tags.each_with_index.reject {|tag,i| ["country","category","Mobile%20Market%20Saturation%20Color","Market%20Saturation%20Color"].include?(tag)}.each do |tag,i| %>
+              <%- if tag.eql?("name") %>
+              <input type="hidden" id="page_name" value="<%= converted_tags[tag] if converted_tags[tag].present? %>">
+              <%- else %>
               <%- if URI.decode(tag).titleize.eql?('Local Players') %>
               <div class="clearfix"></div>
               <div class="col-md-12">
@@ -58,6 +61,7 @@
                   <%- end %>
                 </div>
               </div>
+              <%- end %>
               <% end %>
               
             </div>
