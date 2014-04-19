@@ -171,6 +171,7 @@ class Api::V1::SubmissionsController < ApplicationController
     style = style + 'font-family: proxima-nova, Arial, Helvetica, sans-serif;'
     style = style + 'letter-spacing: 1px;'
     style = style + 'font-weight: bold;'
+    style = style + 'text-transform: uppercase;'
     style = style + 'color: #555;'
     style
   end
@@ -187,7 +188,7 @@ class Api::V1::SubmissionsController < ApplicationController
     s_silk_page = s_silk_page + '<article data-article="" data-format="1" data-title="'+data_title+'" data-tag-context="/tag/'+URI.decode(category.downcase)+'">'
     s_silk_page = s_silk_page + '  <section class="body">'
     s_silk_page = s_silk_page + '    <div class="layout meta">'
-    s_silk_page = s_silk_page + '      <h1 style="'+style_builder+'">'+CGI.unescapeHTML(data_title).upcase+'</h1>'
+    s_silk_page = s_silk_page + '      <h1 style="'+style_builder+'">'+CGI.unescapeHTML(data_title)+'</h1>'
     s_silk_page = s_silk_page + '    </div>'
     s_silk_page = s_silk_page + '    <div class="layout content">'
     s_silk_page = s_silk_page + '      '
