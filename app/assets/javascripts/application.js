@@ -266,9 +266,14 @@ function check_if_edit()
   return r;
 }
 
+function silk_identifier( title )
+{
+  return encodeURI(title + " - " + $('#ddn_country').val());
+}
+
 function collect_startup()
 {
-  s_json = '{"collection":"Startups","silk_identifier":"'+encodeURI($('#startup_name').val())+'",'
+  s_json = '{"collection":"Startups","silk_identifier":"'+silk_identifier($('#startup_name').val())+'",'
   s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
   s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
   s_json = s_json + ',{"category":"startups"}';
@@ -285,7 +290,7 @@ function collect_startup()
 
 function collect_investor()
 {
-  s_json = '{"collection":"Investors","silk_identifier":"'+encodeURI($('#investor_name').val())+'",'
+  s_json = '{"collection":"Investors","silk_identifier":"'+silk_identifier($('#investor_name').val())+'",'
   s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
   s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
   s_json = s_json + ',{"category":"investors"}';
@@ -300,7 +305,7 @@ function collect_investor()
 
 function collect_community()
 {
-  s_json = '{"collection":"Communities","silk_identifier":"'+encodeURI($('#community_name').val())+'",'
+  s_json = '{"collection":"Communities","silk_identifier":"'+silk_identifier($('#community_name').val())+'",'
   s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
   s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
   s_json = s_json + ',{"category":"communities"}';
@@ -315,7 +320,7 @@ function collect_community()
 
 function collect_person()
 {
-  s_json = '{"collection":"People","silk_identifier":"'+encodeURI($('#person_name').val())+'",'
+  s_json = '{"collection":"People","silk_identifier":"'+silk_identifier($('#person_name').val())+'",'
   s_json = s_json + '"country": "'+encodeURI($('#ddn_country').val())+'",';
   s_json = s_json + '"content":{"tags":[{"country": "'+encodeURI($('#ddn_country').val())+'"}';
   s_json = s_json + ',{"category":"people"}';
