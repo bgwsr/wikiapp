@@ -47,7 +47,7 @@
 
             <div class="row">
               <% available_tags.each_with_index.reject {|tag,i| ["title","category","Mobile%20Market%20Saturation%20Color","Market%20Saturation%20Color"].include?(tag)}.each do |tag,i| %>
-              <%- if URI.decode(tag).titleize.eql?('Local Players') %>
+              <%- if ['Local Players','Address (If Applicable)'].include?(URI.decode(tag).titleize) %>
               <div class="clearfix"></div>
               <div class="col-md-12">
               <%- else %>
@@ -56,7 +56,7 @@
                 <div class="form-group">
                   <label><%= URI.decode(tag).titleize %></label>
                   <div class="input-group" data-key="<%= URI.decode(tag).downcase.gsub(" ","_") %>">
-                    <%- if ["Local Players"].include?(URI.decode(tag).titleize) %>
+                    <%- if ["Local Players",'Address (If Applicable)'].include?(URI.decode(tag).titleize) %>
                     <textarea rows="4" class="form-control"><%= converted_tags[tag] %></textarea>
                     
                     <%- else %>
@@ -93,7 +93,7 @@
             <div class="row">
               
               <% available_tags.each_with_index.reject {|tag,i| ["title","category","Mobile%20Market%20Saturation%20Color","Market%20Saturation%20Color"].include?(tag)}.each do |tag,i| %>
-              <%- if URI.decode(tag).titleize.eql?('Local Players') %>
+              <%- if ['Local Players','Address (If Applicable)'].include?(URI.decode(tag).titleize) %>
               <div class="clearfix"></div>
               <div class="col-md-12">
               <%- else %>
@@ -101,7 +101,7 @@
               <%- end %>
                 <div class="form-group">
                   <label><%= URI.decode(tag).titleize %></label>
-                  <%- if ["Local Players"].include?(URI.decode(tag).titleize) %>
+                  <%- if ["Local Players",'Address (If Applicable)'].include?(URI.decode(tag).titleize) %>
                   <textarea rows="4" class="form-control" id="<%= URI.decode(tag).downcase.gsub(" ","_") %>"><%= first_tags[tag] if first_tags[tag].present? %></textarea>
                   
                   <%- else %>

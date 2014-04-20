@@ -15,7 +15,7 @@ class Api::V1::SubmissionsController < ApplicationController
   def create
     if current_user.present?
       if params[:id].present?
-        s = Submission.where(params[:id])
+        s = Submission.where(id: params[:id])
         if s.present?
           s = s.first
         else
@@ -142,24 +142,33 @@ class Api::V1::SubmissionsController < ApplicationController
   def tag_builder( country, category, tags )
     tags_html = '<div style="margin-bottom: 20px;">'
         
-    tags_html = tags_html + '<div style="display: inline-block; width: 200px; font-weight: 700;">'
+    tags_html = tags_html + '<div style="display: inline-block; width: 200px; font-weight: 700; vertical-align: top;">'
     tags_html = tags_html + '<a href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/country">Country</a>'
     tags_html = tags_html + '</div>'
 
-    tags_html = tags_html + '<div style="display: inline-block; width: 300px;">'
+    tags_html = tags_html + '<div style="display: inline-block; width: 300px; vertical-align: top;">'
     tags_html = tags_html + '<a data-tag-uri="http://'+ENV['SILK_SITE']+'.silk.co/tag/country" href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/country/filter/enum/country/'+country+'">' + country.titleize + '</a>'
     tags_html = tags_html + '</div>'
     
     tags.each_with_index do |tag,index|
       tag.each do |key,value|
-        
-        tags_html = tags_html + '<div style="display: inline-block; width: 200px; font-weight: 700;">'
-        tags_html = tags_html + '<a href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/'+URI.decode(key).titleize+'">'+URI.decode(key).titleize+ '</a>'
-        tags_html = tags_html + '</div>'
-
-        tags_html = tags_html + '<div style="display: inline-block; width: 300px;">'
-        tags_html = tags_html + '<a data-tag-uri="http://'+ENV['SILK_SITE']+'.silk.co/tag/'+URI.decode(key).titleize+'" href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/'+URI.decode(key).titleize+'/filter/enum/'+URI.decode(key).titleize+'/'+value+'">' + URI.decode(value).titleize + '</a>'
-        tags_html = tags_html + '</div>'
+        unless URI.decode(key).downcase.include?("address") || URI.decode(key).downcase.include?("website")
+          tags_html = tags_html + '<div style="display: inline-block; width: 200px; font-weight: 700; vertical-align: top;">'
+          tags_html = tags_html + '<a href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/'+URI.decode(key).titleize+'">'+URI.decode(key).titleize+ '</a>'
+          tags_html = tags_html + '</div>'
+  
+          tags_html = tags_html + '<div style="display: inline-block; width: 300px; vertical-align: top;">'
+          tags_html = tags_html + '<a data-tag-uri="http://'+ENV['SILK_SITE']+'.silk.co/tag/'+URI.decode(key).titleize+'" href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/'+URI.decode(key).titleize+'/filter/enum/'+URI.decode(key).titleize+'/'+value+'">' + URI.decode(value).titleize + '</a>'
+          tags_html = tags_html + '</div>'
+        else
+          tags_html = tags_html + '<div style="display: inline-block; width: 200px; font-weight: 700; vertical-align: top;">'
+          tags_html = tags_html + URI.decode(key).titleize
+          tags_html = tags_html + '</div>'
+  
+          tags_html = tags_html + '<div style="display: inline-block; width: 300px; vertical-align: top;">'
+          tags_html = tags_html + URI.decode(value).titleize
+          tags_html = tags_html + '</div>'
+        end
         
       end
     end

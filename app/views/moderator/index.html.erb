@@ -20,12 +20,10 @@
               tags = contents["tags"]
               country = ''
               category = ''
-              valuation = ''
               city = ''
               tags.each do |tag|
                 country = URI.decode(tag["country"]) if tag["country"].present?
                 category = URI.decode(tag["collection"]) if tag["collection"].present?
-                valuation = URI.decode(tag["valuation"]) if tag["valuation"].present?
                 city = URI.decode(tag["city"]) if tag["city"].present?
               end
               

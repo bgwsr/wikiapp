@@ -19,6 +19,12 @@
 //= require_tree .
 
 $(document).ready(function(){
+  $('.markdown-data').each(function(){
+    $(this).markdown({
+      autofocus: true,
+      savable: false
+    });
+  });
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-trigger="manual"][data-toggle="tooltip"]').tooltip('show');
 });
@@ -293,11 +299,24 @@ function collect_investor()
 
 function collect_community()
 {
+  if ( $('#hdn_identifier').length )
+  {
+    data.silk_identifier = $('#hdn_identifier').val();
+  }
+  if ( $('input#category').length )
+  {
+    data.collection = $('#input#category').val();
+  }
   s_json = '{"collection":"Communities","silk_identifier":"'+data.silk_identifier+'",'
   s_json = s_json + '"country": "'+encodeURI(get_country())+'",';
   s_json = s_json + '"content":{"tags":[{"category":"communities"}';
-  s_json = s_json + ',{"name":"'+encodeURI($('#page_name').val())+'"}';
-  s_json = s_json + ',{"city":"'+encodeURI($('#community_city').val())+'"}],';
+  
+  $('.form-control[data-tag]').each(function(){
+    tag = $(this).attr('data-tag');
+    s_json = s_json + ',{"'+tag+'":"'+encodeURI($(this).val())+'"}';
+  });
+  
+  s_json = s_json + '],';
   s_json = s_json + '"body":"'+encodeURI($('#community_description').val())+'"}';
   s_json = s_json + check_if_edit();
   s_json = s_json + '}';

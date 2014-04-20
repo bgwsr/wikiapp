@@ -1,19 +1,9 @@
-<input type="hidden" id="wsw_id" name="wsw_id" value="<%= @submission.id %>">
-  <div class="row form" id="starting_point">
-    <div class="col-xs-12 col-md-8 col-md-offset-2">
-      <p class="lead">
-        Hi <%= current_user.identities.first.first_name %>!
-      </p>
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-          <h3 class="panel-title">Editing "<%= @submission.silk_identifier %>"</h3>
-        </div>
-        <div class="panel-body">
           <%-
             converted_tags = Hash.new
             available_tags = []
 
-            title = @submission.silk_identifier
+            silk_identifier = @submission.silk_identifier
+            country,collection,page_name = silk_identifier.split(":")
             contents = ActiveSupport::JSON.decode(@submission.content)
             
             html_body = ''
@@ -22,6 +12,7 @@
             end
             
             tags = contents["tags"]
+            
             converted_tags = Hash.new
             available_tags = ['category']
 
@@ -31,12 +22,27 @@
                 available_tags.push key unless key.eql?('category')
               end
             end
-            
             article = contents["body"]
           %>
+
+<input type="hidden" id="wsw_id" name="wsw_id" value="<%= @submission.id %>">
+  <div class="row form" id="starting_point">
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+      <p class="lead">
+        Hi <%= current_user.identities.first.first_name %>!
+      </p>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Editing <%= collection.singularize %> "<%= page_name %>" (<%= country %>)</h3>
+        </div>
+        <div class="panel-body">
           <div class="callout callout-info">
-            <h4><%= title %></h4>
+            <h4><%= page_name %></h4>
+            <input type="hidden" id="hdn_identifier" name="hdn_identifier" value="<%= silk_identifier %>">
             <input type="hidden" id="hdn_category" name="hdn_category" value="<%= converted_tags['category'].singularize %>">
+            <input type="hidden" id="category" name="category" value="<%= converted_tags['category'] %>">
+            <input type="hidden" id="page_name" value="<%= page_name %>">
+            <input type="hidden" id="country" value="<%= country %>">
             
             <div class="row">
               
@@ -44,7 +50,7 @@
               <%- if tag.eql?("name") %>
               <input type="hidden" id="page_name" value="<%= converted_tags[tag] if converted_tags[tag].present? %>">
               <%- else %>
-              <%- if URI.decode(tag).titleize.eql?('Local Players') %>
+              <%- if ["Local Players","Address (If Applicable)"].include?(URI.decode(tag).titleize) %>
               <div class="clearfix"></div>
               <div class="col-md-12">
               <%- else %>
@@ -52,11 +58,11 @@
               <%- end %>
                 <div class="form-group">
                   <label><%= URI.decode(tag).titleize %></label>
-                  <%- if ["Local Players"].include?(URI.decode(tag).titleize) %>
-                  <textarea rows="4" class="form-control" id="<%= converted_tags['category'].singularize + "_" + URI.decode(tag).downcase.gsub(" ","_") %>"><%= converted_tags[tag] if converted_tags[tag].present? %></textarea>
+                  <%- if ["Local Players","Address (If Applicable)"].include?(URI.decode(tag).titleize) %>
+                  <textarea rows="4" class="form-control" data-tag="<%= tag %>" id="<%= converted_tags['category'].singularize + "_" + URI.decode(tag).downcase.gsub(" ","_") %>"><%= converted_tags[tag] if converted_tags[tag].present? %></textarea>
                   
                   <%- else %>
-                  <input type="text" class="form-control input-sm" id="<%= converted_tags['category'].singularize + "_" + URI.decode(tag).downcase.gsub(" ","_") %>" value="<%= converted_tags[tag] if converted_tags[tag].present? %>">
+                  <input type="text" class="form-control input-sm" id="<%= converted_tags['category'].singularize + "_" + URI.decode(tag).downcase.gsub(" ","_") %>" data-tag="<%= tag %>" value="<%= converted_tags[tag] if converted_tags[tag].present? %>">
                   
                   <%- end %>
                 </div>
