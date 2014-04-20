@@ -58,7 +58,7 @@ a.nerubia {
 }
 
 .form-signin {
-  max-width: 330px;
+  max-width: 400px;
   padding: 15px;
   margin: 0 auto;
 }
@@ -188,6 +188,33 @@ a.nerubia {
 
 .waiter .jumbotron-icon .fa {
   vertical-align: bottom;
+}
+ul.jumbotron-icon {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul.jumbotron-icon li {
+  display: inline-block;
+  background-repeat: no-repeat;
+  width: 49.2%;
+  margin: 0;
+  text-align: center;
+}
+.jumbotron-icon .fa:hover {
+  text-decoration: none;
+}
+.fa-facebook-square {
+  color: #4c66a4;
+}
+.fa-facebook-square:hover {
+  color: #333;  
+}
+.fa-linkedin-square {
+  color: #006699;
+}
+.fa-linkedin-square:hover {
+  color: #333;
 }
 
 /* Jumbotron icons */
