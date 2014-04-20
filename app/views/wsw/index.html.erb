@@ -1,85 +1,78 @@
-<div class="page-header text-center">
-  <h1>World Startup Wiki Submission Tool</h1>
-</div>
 
 <div class="text-center">
   <%- if current_user.present? %>
-  <p class="text-center lead">
-    Hi <%= current_user.identities.first.first_name %>!
-  </p>
-
   <div class="row form" id="starting_point">
-    <div class="col-xs-12 col-md-4 col-md-offset-4">
-      <div class="panel panel-primary">
-        <div class="panel-body">
-          <p>
-            <a href="#" class="btn btn-block btn-primary btn-lg" data-target="choose_country">
-              <i class="glyphicon glyphicon-plus-sign"></i> I want to add to WSW
+    <div class="col-xs-12">
+      <h2 class="lead">What Do You Want To Do?</h2>
+    </div>
+    <div class="col-xs-12 col-md-6 col-md-offset-3">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <a href="#" class="btn btn-block btn-text text-black btn-lg">
+              <span class="jumbotron-icon" data-target="choose_country" data-placement="bottom" data-toggle="tooltip" data-trigger="manual" title="Add New Article">
+                <i class="fa fa-plus-square-o fa-4"></i>
+              </span>
             </a>
-          </p>
+          </div>
+        
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <a href="#" class="btn btn-block btn-text text-black btn-lg" data-target="edit_page">
+              <span class="jumbotron-icon" data-target="choose_country" data-placement="bottom" data-toggle="tooltip" data-trigger="manual" title="Update Article">
+                <i class="fa fa-pencil-square-o fa-4"></i>
+              </span>
+            </a>
+          </div>
+        
         <%- if current_user.ambassador %>
-          <p>
-            <a href="#" class="btn btn-block btn-success btn-lg" data-target="edit_page">
-              <i class="glyphicon glyphicon-edit"></i> I want to edit wiki pages
-            </a>
-          </p>
-          <p>
-            <%= link_to moderator_url, class: "btn btn-block btn-warning btn-lg" do %>
-              <i class="glyphicon glyphicon-check"></i> I want to moderate submissions
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <%= link_to moderator_url, class: "btn btn-block btn-text text-black btn-lg" do %>
+              <span class="jumbotron-icon" data-target="choose_country" data-placement="bottom" data-toggle="tooltip" data-trigger="manual" title="Moderator Mode">
+                <i class="fa fa-check-square-o fa-4"></i>
+              </span>
             <% end %>
-          </p>
+          </div>
         <%- end %>
         </div>
-      </div>
+
     </div>
   </div>
   
 
   <!-- choose_country -->
   <div class="row text-left hide form" id="choose_country">
-    <div class="col-md-6 col-md-offset-3">
-      <div>
-        <div class="form-group">
-          <label>Step 1 &mdash; Select Country</label>
-          <%= render 'shared/country_select' %>
-        </div>
-        
-        <br>
+    <div class="col-md-5 col-md-offset-1">
 
-        <div class="form-group">
-          <label>Step 2 &mdash; Add Page Title / Name</label>
-          <input type="text" id="page_name" class="form-control input-lg">
-        </div>
+      <div class="form-group">
+        <label>First, select your country &amp; add the name</label>
+        <%= render 'shared/country_select' %><br>
+        <input type="text" id="page_name" class="form-control input-lg">
+      </div>
+
+    </div>
         
-        <br>
-        
-        <div class="form-group">
-          <label>Step 3 &mdash; Select Category</label>
-          <div class="row">
-            <div class="input-group col-md-6">
-              <a href="#" class="btn btn-info btn-lg btn-block" data-target="add_startup"><i class="glyphicon glyphicon-chevron-right"></i> Startup</a>
-            </div>
-            
-            <div class="input-group col-md-6">
-              <a href="#" class="btn btn-info btn-lg btn-block" data-target="add_investor"><i class="glyphicon glyphicon-chevron-right"></i> Investor</a>
-            </div>
+    <div class="col-xs-3">
+      <div class="form-group">
+        <label>Then select the wiki collection</label>
+        <div class="row">
+          <div class="col-md-6 text-left">
+            <a href="#" class="next labeled" data-target="add_startup">Startups</a><br>
+            <a href="#" class="next labeled" data-target="add_investor">Investors</a><br>
+            <a href="#" class="next labeled" data-target="add_people">People</a><br>
+            <a href="#" class="next labeled" data-target="add_community">Communities</a>
           </div>
-        </div>
-
-        
-        <div class="form-group row">
-
-          <div class="input-group col-md-6">
-            <a href="#" class="btn btn-info btn-lg btn-block" data-target="add_community"><i class="glyphicon glyphicon-chevron-right"></i> Community</a>
-          </div>
-          
-          <div class="input-group col-md-6">
-            <a href="#" class="btn btn-info btn-lg btn-block" data-target="add_people"><i class="glyphicon glyphicon-chevron-right"></i> People</a>
-          </div>
-
         </div>
       </div>
     </div>
+        
+    <div class="col-md-2 lead">
+      <div class="waiter fade out">
+        <div class="jumbotron-icon">
+          <span class="fa fa-3 fa-magic"></span>
+        </div>
+        <div>Please wait...</div>
+      </div>
+    </div>
+      
   </div>
   <!-- end choose_country -->
   
@@ -317,7 +310,6 @@
   </div>
   
   <div class="col-md-6 col-md-offset-3 text-right">
-    <%= link_to "Sign Out", destroy_user_session_url, method: :delete %>
     <% else %>
     <%= link_to "Sign In", new_user_session_url %>
     <%- end -%>

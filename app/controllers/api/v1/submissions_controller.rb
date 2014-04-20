@@ -154,11 +154,11 @@ class Api::V1::SubmissionsController < ApplicationController
       tag.each do |key,value|
         
         tags_html = tags_html + '<div style="display: inline-block; width: 200px; font-weight: 700;">'
-        tags_html = tags_html + '<a href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/'+key+'">'+URI.decode(key).titleize+ '</a>'
+        tags_html = tags_html + '<a href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/'+URI.decode(key).titleize+'">'+URI.decode(key).titleize+ '</a>'
         tags_html = tags_html + '</div>'
 
         tags_html = tags_html + '<div style="display: inline-block; width: 300px;">'
-        tags_html = tags_html + '<a data-tag-uri="http://'+ENV['SILK_SITE']+'.silk.co/tag/'+key.downcase+'" href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/'+key+'/filter/enum/'+key+'/'+value+'">' + URI.decode(value).titleize + '</a>'
+        tags_html = tags_html + '<a data-tag-uri="http://'+ENV['SILK_SITE']+'.silk.co/tag/'+URI.decode(key).titleize+'" href="/explore/table/collection/'+URI.decode(category.downcase)+'/column/'+URI.decode(key).titleize+'/filter/enum/'+URI.decode(key).titleize+'/'+value+'">' + URI.decode(value).titleize + '</a>'
         tags_html = tags_html + '</div>'
         
       end

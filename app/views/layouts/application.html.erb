@@ -6,13 +6,30 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>World Startup Wiki Moderator Tool</title>
   <%= twitter_bootstrap_stylesheet_link_tag :netdna, force: true %>
+  <%= stylesheet_link_tag "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" %>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   
   <%= csrf_meta_tags %>
 </head>
 
 <body>
-
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <a class="navbar-brand" href="#">World Startup Wiki <small>Submission Tool</small></a>
+      <ul class="nav navbar-nav navbar-right">
+        <%- if current_user.present? %>
+        <li>
+          <a>Hi <%= current_user.identities.first.first_name %>!</a>
+        </li>
+        <li>
+          <%= link_to destroy_user_session_url, method: :delete, data: {toggle: "tooltip", placement: "bottom", container: "body"}, title:"Sign out" do %>
+            <i class="fa fa-sign-out"></i>
+          <%- end %>
+        </li>
+        <%- end %>
+      </ul>
+    </div>
+  </nav>
 <!-- view -->
 <div class="container">
   <div id="site_alert">
@@ -25,8 +42,14 @@
   </div>
   
   <%= yield %>
+  
+  
 </div>
-
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+  <div class="container">
+    <p class="navbar-text navbar-right nerubia">Code provided for by <a class="nerubia" href="//www.nerubia.com">Nerubia</a></p>
+  </div>
+</nav>
 <!-- end of view -->
 
   <%= include_jquery env: :production %>

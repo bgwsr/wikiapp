@@ -56,6 +56,7 @@ gem 'omniauth-linkedin'
 gem 'linkedin'
 
 gem 'rails_12factor', group: :production
+gem 'thin', group: :development
 
 gem 'rest-client'
 gem 'redcarpet'

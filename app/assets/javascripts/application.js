@@ -19,7 +19,8 @@
 //= require_tree .
 
 $(document).ready(function(){
-
+  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-trigger="manual"][data-toggle="tooltip"]').tooltip('show');
 });
 
 window.location.hash = "";
@@ -37,7 +38,8 @@ $('[data-target="edit_page"]').click(function(e){
   e.preventDefault();
   $('.form').addClass('hide');
   $('#thanks').addClass('hide');
-  $('#edit_page').removeClass('hide');
+//  $('#edit_page').removeClass('hide');
+  $('#choose_country').removeClass('hide');
 });
 
 $('#btn_edit_page').click(function(){
@@ -129,6 +131,12 @@ $('[id*="btn_submit_"]').click(function(e){
   $('#starting_point').removeClass('hide');
 });
 
+$('[data-target="#starting_point"]').click(function(e){
+  e.preventDefault();
+  $('.form').addClass('hide');
+  $('#starting_point').removeClass('hide');
+});
+
 $('a.list-group-item').click(function(){
   $('#editor textarea').val($(this).find('.data-description').html());
   $('#editor .modal-title').text($(this).find('.data-title').val());
@@ -169,29 +177,6 @@ $('#btn_silk_submit').click(function(){
       btn.html(enabled);
       btn.removeAttr('disabled');
       location.href = "/moderator"
-    }
-  });
-});
-
-$('.markdown-data').each(function(){
-  $(this).markdown({
-    autofocus: true,
-    savable: false,
-    onSave: function(e) {
-  /*
-      $('.markdown-data').html( markdown.toHTML(e.getContent()) );
-      $('form.ticket-edit').addClass('hide');
-      $('[data-form=".ticket-edit"]').show();
-      description = $('form.ticket-edit #ticket_description').val().replace(/\n/g, "\\n");
-      $.ajax({
-        url: '/api/ticket/update/'+$('form.ticket-edit #ticket_id').val(),
-        type: 'POST',
-        processData: false,
-        dataType: 'json',
-        contentType: 'application/json',
-        data: '{"ticket":{"description":"'+description+'"}}'
-      });
-  */
     }
   });
 });
@@ -253,6 +238,10 @@ function silk_identifier()
   {
     $('[data-target*="add_"]').addClass('disabled');
     silk_identifier = encodeURI(get_country()+":"+data.collection+":"+$('#page_name').val());
+    $('.waiter.fade').addClass('in');
+    var ani = setInterval(function(){
+      $('.waiter.fade').toggleClass('in');
+    }, 300);
     $.get("/api/submissions/silker/"+silk_identifier, function(a){
       data.silk_identifier = a.article;
       if (data.silk_identifier == null)
@@ -265,6 +254,7 @@ function silk_identifier()
       {
         location.href = "/edit-entry/"+silk_identifier;
       }
+      clearInterval(ani);
       $('#choose_country,#thanks').addClass('hide');
     });
     return silk_identifier;
