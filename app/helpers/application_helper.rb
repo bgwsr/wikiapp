@@ -91,7 +91,7 @@ module ApplicationHelper
   
   def dummy(country, section, contents)
     '
-    <article data-article="" data-format="1" data-title="toc">
+    <article data-article="" data-format="1" data-title="'+"#{country} #{section}"+'" data-tag-context="/tag/Country Information">
       <section class="body">
         <div class="layout meta">
           <div data-component-uri="//silk.co/block/simple/1" class="block">
