@@ -1,0 +1,74 @@
+<input type="hidden" id="country" value="<%= params[:country] %>">
+<div class="text-center" id="information">
+  <%- if current_user.present? %>
+
+  <!-- choose_country -->
+  <div class="row text-left form" id="choose_country">
+        
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Please elect the section to edit</label>
+
+        <div class="text-left">
+          <a href="#" class="next labeled" data-target="c_overview">Overview</a><br>
+          <a href="#" class="next labeled" data-target="c_startup_ecosystem">Startup Eco-System</a><br>
+          <a href="#" class="next labeled" data-target="c_opportunities">Opportunities</a><br>
+          <a href="#" class="next labeled" data-target="c_controversies">Controversies</a><br>
+          <a href="#" class="next labeled" data-target="c_culture">Cultural Awareness</a><br>
+          <a href="#" class="next labeled" data-target="c_establishing">Establishing Your Startup</a><br>
+          <a href="#" class="next labeled" data-target="c_advice">Advice</a>
+        </div>
+      </div>
+    </div>
+        
+    <div class="col-md-8 lead">
+      <div class="row waiter hide fade out">
+        <div class="jumbotron-icon">
+          <span class="fa fa-3 fa-magic"></span>
+        </div>
+        <div>Please wait...</div>
+      </div>
+
+<!-- information_form -->
+      <div class="row text-left hide form" id="information_form">
+        <div>
+          
+          <div class="form-group">
+            <h3>Edit <span data-section>Overview</span></h3>
+            <textarea rows="12" class="form-control markdown-data" id="txa_information_content" name="txa_information_content"></textarea>
+          </div>
+          
+          <p class="text-right">
+            <a href="#" class="btn btn-info btn-lg" id="btn_update_information">Submit <i class="glyphicon glyphicon-upload"></i></a>
+          </p>
+    
+        </div>
+      </div>
+<!-- end of information_form -->
+
+    </div>
+      
+  </div>
+  <!-- end choose_country -->
+  
+  
+  <div class="col-md-6 col-md-offset-3 text-left hide" id="thanks">
+    <h4>Thanks! <small>Moderation time.</small></h4>
+    
+    
+    <p>
+      Add more:
+      <ul class="text-left">
+        <li><a href="#" data-target="add_startup">Startups</a>?</li>
+        <li><a href="#" data-target="add_investor">Investors</a>?</li>
+        <li><a href="#" data-target="add_community">Communities</a>?</li>
+      </ul>
+    </p>
+  </div>
+  
+  <div class="col-md-6 col-md-offset-3 text-right">
+    <% else %>
+    <%= link_to "Sign In", new_user_session_url %>
+    <%- end -%>
+  </div>
+</div>

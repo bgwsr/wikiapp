@@ -3,10 +3,10 @@ class ModeratorController < ApplicationController
   def index
     if current_user.present? and current_user.ambassador?
       if current_user.countries.eql?('all')
-        @submissions = Submission.where(status: ["pending", "imported"])
+        @submissions = Submission.includes(:user).where(status: ["pending", "imported"])
       else
         countries = current_user.countries.split(",")
-        @submissions = Submission.where(country: countries, status: ["pending", "imported"])
+        @submissions = Submission.includes(:user).where(country: countries, status: ["pending", "imported"])
       end
     else
       render text: "not allowed", status: 403 and return

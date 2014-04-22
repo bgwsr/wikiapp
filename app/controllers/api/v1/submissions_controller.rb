@@ -8,8 +8,20 @@ class Api::V1::SubmissionsController < ApplicationController
     silk_sid = Silker.authenticate( ENV['SILK_EMAIL'], ENV['SILK_PASSWORD'] )
     silker = Silker.new( silk_sid, ENV['SILK_SITE'] )
     article = silker.get_private_page_html(URI.encode(params[:silk_identifier]))
-
+    
     render :json => { :article => article }, :status => 200 and return
+  end
+  
+  def silker_page
+    silk_sid = ' '
+    while silk_sid.nil? || silk_sid.include?(" ")
+      silk_sid = Silker.authenticate( ENV['SILK_EMAIL'], ENV['SILK_PASSWORD'] )
+    end
+    
+    silker = Silker.new( silk_sid, ENV['SILK_SITE'] )
+    article = silker.get_private_page_html(URI.encode(params[:silk_identifier]))
+    html_article = Nokogiri.HTML( article )
+    render :json => {contents: html_article.css('div#nerubia').children.to_s}, :status => 200 and return
   end
 
   def create
@@ -137,6 +149,29 @@ class Api::V1::SubmissionsController < ApplicationController
   def failure
     render :json => { :error => "Houston we have a problem" }, :status => 401
   end
+
+  def update_silk
+    section = 'Overview'
+    section = params[:section] if params[:section].present?
+    if params[:contents].present? and params[:country].present?
+      silk_sid = ' '
+      while silk_sid.nil? || silk_sid.include?(" ")
+        silk_sid = Silker.authenticate( ENV['SILK_EMAIL'], ENV['SILK_PASSWORD'] )
+      end
+      silker = Silker.new( silk_sid, ENV['SILK_SITE'] )
+      
+      markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true, :filter_html => true)
+
+      contents = markdown.render(URI.decode(params[:contents])).gsub("\n", "")
+      
+      silk_html = dummy(params[:country], section, contents)
+      
+      silk_result = silker.create_or_update_page( URI.encode("#{params[:country]} #{section}"), silk_html )
+      
+      render :xml => silk_result, :status => 200 and return if !silk_result.nil?
+    end
+    failure
+  end
   
   private
   def tag_builder( country, category, tags )
@@ -220,4 +255,6 @@ class Api::V1::SubmissionsController < ApplicationController
     puts "Response from Silk API: #{!silk_result.nil?}"
     !silk_result.nil?
   end
+  
+
 end

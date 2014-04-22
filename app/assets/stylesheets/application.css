@@ -254,6 +254,17 @@ ul.jumbotron-icon li {
   text-transform: lowercase;
   width: 48px;
 }
+#information .labeled {
+  border-bottom: 1px dashed #eaeaea;
+  padding: 24px 0 23px;
+  margin-bottom: 3px;
+  height: 70px;
+  line-height: 17px;
+  width: 100%;
+}
+#information .labeled > span {
+  vertical-align: middle;
+}
 .labeled:hover {
   text-decoration: none;
 }

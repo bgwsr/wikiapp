@@ -52,6 +52,73 @@ $('#btn_edit_page').click(function(){
   location.href='/edit-entry/'+encodeURI($('#edit_page #silk_identifier').val());
 });
 
+information_section = 'Overview'
+$('#information [data-target*="c_"]').click(function(e){
+  e.preventDefault();
+  
+  switch ( $(this).attr('data-target') )
+  {
+    case 'c_overview':
+      information_section = 'Overview';
+      break;
+
+    case 'c_startup_ecosystem':
+      information_section = 'Startup Ecosystem';
+      break;
+
+    case 'c_opportunities':
+      information_section = 'Opportunities';
+      break;
+
+    case 'c_controversies':
+      information_section = 'Controversies';
+      break;
+
+    case 'c_culture':
+      information_section = 'Cultural Awareness';
+      break;
+
+    case 'c_establishing':
+      information_section = 'Establishing Your Startup';
+      break;
+
+    case 'c_advice':
+      information_section = 'Advice';
+      break;
+
+  }
+  silk_identifier = encodeURI(get_country() + " " + information_section);
+  
+  $.get("/api/submissions/get_silk/"+silk_identifier, function(a){
+    $('#txa_information_content').val( toMarkdown(a.contents) );
+  });
+  
+  $('[data-section]').text( decodeURI(silk_identifier) );
+  $('#information_form').fadeIn().removeClass('hide');
+  return false;
+  //target_collection = '#'+$(this).attr('data-target');
+});
+
+$('#btn_update_information').click(function(e){
+  e.preventDefault();
+  submit_information_update();
+});
+
+function submit_information_update()
+{
+  $.ajax({
+    url: "/api/submissions/update_silk",
+    type: 'POST',
+    dataType: 'json',
+    contentType: 'application/json',
+    processData: false,
+    data: collect_information(),
+    success: function(o_return, s_status, o_xhr) {
+      
+    }
+  });
+}
+
 
 $('[data-target*="add_"]').click(function(e){
   e.preventDefault();
@@ -73,6 +140,12 @@ $('[data-target*="add_"]').click(function(e){
     case 'add_people':
       data.collection = 'People';
       break;
+
+    case 'add_country':
+      location.href = '/information/'+encodeURI($('#country').val());
+      return false;
+      data.collection = 'Information';
+      break;
   }
   
   if (silk_identifier() == false)
@@ -84,6 +157,8 @@ $('[data-target*="add_"]').click(function(e){
   
   target_collection = '#'+$(this).attr('data-target');
 });
+
+
 
 $('[id*="btn_submit_"]').click(function(e){
   e.preventDefault();
@@ -222,11 +297,11 @@ function check_if_edit()
 function silk_identifier()
 {
   error = '';
-  if ( $('#page_name').val() == '' && get_country() == '' )
+  if ( ($('#page_name').val() == '' && data.collection != 'Information') && get_country() == '' )
   {
     error = 'Please select a country and provide a name to your contribution';
   }
-  else if ( $('#page_name').val() == '' )
+  else if ($('#page_name').val() == '' && data.collection != 'Information')
   {
     error = 'Please provide a name to your contribution';
   }
@@ -243,7 +318,17 @@ function silk_identifier()
   else
   {
     $('[data-target*="add_"]').addClass('disabled');
-    silk_identifier = encodeURI(get_country()+":"+data.collection+":"+$('#page_name').val());
+
+    if ( data.collection == 'Information' )
+    {
+      silk_identifier = encodeURI(get_country());
+      location.href = '/information/'+silk_identifier;
+    }
+    else
+    {
+      silk_identifier = encodeURI(get_country()+":"+data.collection+":"+$('#page_name').val());
+    }
+    
     $('.waiter.fade').addClass('in');
     var ani = setInterval(function(){
       $('.waiter.fade').toggleClass('in');
@@ -336,6 +421,11 @@ function collect_person()
   s_json = s_json + '}';
   
   return s_json;
+}
+
+function collect_information()
+{
+  return '{"country":"'+get_country()+'","section":"'+information_section+'","contents":"'+encodeURI($('#txa_information_content').val())+'"}';
 }
 
 var market_saturation = null;

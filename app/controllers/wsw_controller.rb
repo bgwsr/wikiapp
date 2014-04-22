@@ -7,16 +7,27 @@ class WswController < ApplicationController
 
   def edit
     redirect_to new_user_session_url and return unless current_user.present?
+
     if params[:k].present? && params[:a].present?
       key = URI.decode(params[:k])
       if decrypt(key) == params[:a]
         @submission = Archive.find(params[:a])
       end
+
     elsif params[:silk_identifier].present?
       @submission = Archive.where(silk_identifier: URI.decode(params[:silk_identifier]), status: "submitted").first
+    
     end
-    render "edit" and return if @submission.present?
+    
+    render 'edit' and return if @submission.present?
+    
     not_allowed
+  end
+  
+  def information
+    if params[:country].present?
+      
+    end
   end
 
   def not_allowed

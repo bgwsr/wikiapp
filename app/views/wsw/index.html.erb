@@ -58,7 +58,8 @@
             <a href="#" class="next labeled" data-target="add_startup">Startups</a><br>
             <a href="#" class="next labeled" data-target="add_investor">Investors</a><br>
             <a href="#" class="next labeled" data-target="add_people">People</a><br>
-            <a href="#" class="next labeled" data-target="add_community">Communities</a>
+            <a href="#" class="next labeled" data-target="add_community">Communities</a><br>
+            <a href="#" class="next labeled" data-target="add_country">Information Pages</a>
           </div>
         </div>
       </div>
@@ -92,6 +93,44 @@
     <br>
   </div>
   <!-- end edit_page -->
+
+  <!-- add_startup -->
+  <div class="row text-left hide form" id="add_startup">
+    <div class="col-md-6 col-md-offset-3">
+      <div>
+        <div class="form-group row">
+          <div class="col-md-3">
+            <label for="startup_year_founded">Year Started</label>
+            <input type="text" class="form-control" id="startup_year_founded" name="startup_year_founded">
+          </div>
+        
+          <div class="col-md-3">
+            <label for="startup_valuation">Valuation</label>
+            <div class="input-group">
+              <span class="input-group-addon">$</span>
+              <input type="text" class="form-control numeric" id="startup_valuation" name="startup_valuation">
+            </div>
+          </div>
+        
+          <div class="col-md-6">
+            <label for="startup_city">City</label>
+            <input type="text" class="form-control" id="startup_city" name="startup_city">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="startup_description">Description / Comments</label>
+          <textarea rows="5" class="form-control markdown-data" id="startup_description" name="startup_description"></textarea>
+        </div>
+        
+        <p class="text-right">
+          <a href="#" class="btn btn-info btn-lg" id="btn_submit_startup">Submit <i class="glyphicon glyphicon-upload"></i></a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <!-- end of add_startup -->
   
   <!-- add_investor -->
   <div class="row text-left hide form" id="add_investor">
@@ -143,6 +182,56 @@
     </div>
   </div>
   <!-- end of add_community -->
+  
+  <!-- add_country -->
+  <div class="row text-left hide form" id="add_country">
+    <div class="col-md-3">
+        Menu for sections of the information page
+
+        
+    </div>
+  
+    <div class="col-md-6 col-md-offset-1">
+      <div>
+        
+        <div class="form-group">
+          <h3>Page Welcome</h3>
+          <textarea rows="3" class="form-control markdown-data" id="country_intro" name="country_intro"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <h3>Guide for Aspiring Entrepreneurs</h3>
+          <textarea rows="7" class="form-control markdown-data" id="local_entrepreneur_guide" name="local_entrepreneur_guide"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <h3>Guide for Startup Weekend Graduates</h3>
+          <textarea rows="7" class="form-control markdown-data" id="sw_graduate_guide" name="sw_graduate_guide"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <h3>Guide for Foreign Entrepreneurs</h3>
+          <textarea rows="7" class="form-control markdown-data" id="foreign_entrepreneur_guide" name="foreign_entrepreneur_guide"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <h3>Guide for Foreign Investors</h3>
+          <textarea rows="7" class="form-control markdown-data" id="foreign_investor_guide" name="foreign_investor_guide"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <h3>Guide for Foreign Companies</h3>
+          <textarea rows="7" class="form-control markdown-data" id="foreign_company_guide" name="foreign_company_guide"></textarea>
+        </div>
+        
+        <p class="text-right">
+          <a href="#" class="btn btn-info btn-lg" id="btn_submit_community">Submit <i class="glyphicon glyphicon-upload"></i></a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+  <!-- end of add_country -->
   
   <!-- add_people -->
   <div class="row text-left hide form" id="add_people">
