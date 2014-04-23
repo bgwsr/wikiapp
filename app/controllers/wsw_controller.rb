@@ -27,7 +27,7 @@ class WswController < ApplicationController
   def information
     if params[:s].present? and params[:i].present?
       submission = Submission.where(id: params[:i]).first
-      if submission.present? and submission.silk_identifier.eql?( URI.decode(params[:s]) )
+      if submission.present? and submission.silk_identifier.eql?( URI.decode(params[:s]) ) and params[:country].present?
         @submission = submission
         @section = (URI.decode(params[:s])[submission.country.length..-1]).strip
       else

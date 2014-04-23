@@ -21,9 +21,12 @@ body {
   background-size: auto 100%;
 }
 
-body#sessions {
+body#sessions, body#wsw {
   background: url('http://s3.amazonaws.com/WSW/media/scapes.jpg') center top no-repeat;
-  background-size: auto 100%;
+  background-size: auto 100%!important;
+}
+body#wsw {
+  background-image: url('http://s3.amazonaws.com/WSW/media/scapes.jpg');
 }
 
 #site_alert {
