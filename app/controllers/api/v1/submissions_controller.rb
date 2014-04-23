@@ -315,7 +315,7 @@ class Api::V1::SubmissionsController < ApplicationController
     s_silk_page = s_silk_page + '    </div>'
     s_silk_page = s_silk_page + '    <div class="layout content">'
     s_silk_page = s_silk_page + '      '
-    s_silk_page = s_silk_page + '      <div id="product-bar" style="display:block; width:1px; height:1px; float:right; overflow: visible;"><a href="'+page_edit_url(key: encrypt(id), silk_identifier: URI.encode(page))+'" class="toolbar-button action edit-page" style="color: #ffffff; width: 100px;">Edit Page</a></div>'
+    s_silk_page = s_silk_page + '      <div id="product-bar" style="display:block; width:1px; height:1px; float:right; overflow: visible;"><a href="'+page_edit_url(host: 'contribute.worldstartupwiki.org', key: encrypt(id), silk_identifier: URI.encode(page))+'" class="toolbar-button action edit-page" style="color: #ffffff; width: 100px;">Edit Page</a></div>'
     s_silk_page = s_silk_page + '      ' + tag_builder(country, category, tags)
     s_silk_page = s_silk_page + '      '+CGI.unescapeHTML(content.gsub("\n",""))
     s_silk_page = s_silk_page + '      '

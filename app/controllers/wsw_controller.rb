@@ -25,6 +25,7 @@ class WswController < ApplicationController
   end
   
   def information
+    redirect_to new_user_session_url and return unless current_user.present?
     if params[:s].present? and params[:i].present?
       submission = Submission.where(id: params[:i], status: 'pending').first
       if submission.present? and submission.silk_identifier.eql?( URI.decode(params[:s]) ) and params[:country].present?
