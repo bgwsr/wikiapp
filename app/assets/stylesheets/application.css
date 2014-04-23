@@ -18,6 +18,11 @@ body {
   background-color: #fff;
 }
 
+body#sessions {
+  background: url('http://s3.amazonaws.com/WSW/media/scapes.jpg') center top no-repeat;
+  width: 100%;
+}
+
 #site_alert {
   margin-top: 20px;
 }
