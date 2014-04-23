@@ -62,6 +62,7 @@ $('#btn_edit_page').click(function(){
 });
 
 $('#information [data-target*="c_"]').click(function(e){
+  $('#information_form:visible').fadeOut('slow', function(){ $(this).addClass('hide') });
   e.preventDefault();
   
   switch ( $(this).attr('data-target') )
