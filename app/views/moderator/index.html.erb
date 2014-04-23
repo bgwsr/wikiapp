@@ -1,5 +1,5 @@
   <div class="row form" id="starting_point">
-    <div class="col-xs-12 col-md-8 col-md-offset-2">
+    <div class="col-xs-12 col-md-10 col-md-offset-1">
       <p class="lead">
         Hi <%= current_user.identities.first.first_name %>!
       </p>
@@ -35,7 +35,7 @@
               verify_entry_url = "/information/#{submission.country}?i=#{submission.id}&s=#{submission.silk_identifier}" if collection.nil?
               
           %>
-            <a class="list-group-item" href="<%= verify_entry_url %>">
+            <a class="list-group-item" href="<%= verify_entry_url %>" data-no-turbolink>
               <h6><%= collection.present? ? title : URI.decode(country) %> <small><%- if collection.present? %>A <%= collection.singularize %> in the <%= country %><%- end %> &mdash; <%= submission.user.email %></small> <i class="text-primary pull-right glyphicon glyphicon-chevron-right"></i></h6>
             </a>
           <%- end %>
@@ -49,36 +49,9 @@
                 <i class="glyphicon glyphicon-chevron-left"></i> Back to main page
               <%- end %>
             </div>
-            <div class="text-right col-md-6">
-              <%= link_to destroy_user_session_url, method: :delete, class: "text-right" do %>
-                Sign Out <i class="glyphicon glyphicon-log-out"></i>
-              <%- end %>
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-
-
-<div class="modal fade" id="mdl_reject">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Reject Submission</h4>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="data_id" value="">
-        <div class="form-group">
-          <label for="body_why">Why?</label>
-          <textarea class="form-control" rows="5" id="body_why"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="btn_submit_reason" type="button" class="btn btn-primary" data-dismiss="modal"><i class="glyphicon glyphicon-send"></i> Send</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->

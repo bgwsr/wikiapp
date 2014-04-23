@@ -80,9 +80,12 @@ class Api::V1::SubmissionsController < ApplicationController
       if submission.present?
         if params[:status].present?
           submission.status = params[:status]
+          archive = Archive.new( submission.attributes )
           SubmissionNotifier.moderated(submission.user.email, params[:status], params[:reason]).deliver
         end
-        if submission.save
+        if submission.delete
+          archive.id = nil
+          archive.save
           render :json => { :info => submission }, :status => 200 and return
         end
       end
@@ -192,9 +195,9 @@ class Api::V1::SubmissionsController < ApplicationController
     render :text => 'Error', status: :unprocessable_entity unless params[:country].present? and params[:silk_identifier].present? and params[:content].present?
     
     status_code = queue_for_moderation(params[:country], params[:silk_identifier], params[:content])
-    render :text => 'Done', status: 200 and return if status_code.eql?(200)
-    render :text => 'Error', status: :unprocessable_entity and return if status_code.eql?(:unprocessable_entity)
-    render :text => 'You are not allowed to do that!', status: 403 and return if status_code.eql?(403)
+    render :json => {message: 'Done'}, status: 200 and return if status_code.eql?(200)
+    render :json => {message: 'Error'}, status: :unprocessable_entity and return if status_code.eql?(:unprocessable_entity)
+    render :json => {message: 'You are not allowed to do that!'}, status: 403 and return if status_code.eql?(403)
     
   end
 

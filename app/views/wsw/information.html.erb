@@ -10,8 +10,8 @@
   <div class="row text-left form" id="choose_country">
         
     <div class="col-md-4">
+      <h4>Please elect the <b>section</b> to edit</h4>
       <div class="form-group">
-        <label>Please elect the section to edit</label>
 
         <div class="text-left" id="sidenav">
           <a href="#" class="next labeled" data-target="c_overview">Overview</a><br>
@@ -20,13 +20,13 @@
           <a href="#" class="next labeled" data-target="c_controversies">Controversies</a><br>
           <a href="#" class="next labeled" data-target="c_culture">Cultural Awareness</a><br>
           <a href="#" class="next labeled" data-target="c_establishing">Establishing Your Startup</a><br>
-          <a href="#" class="next labeled" data-target="c_advice">Advice</a>
+          <a href="#" class="next labeled last" data-target="c_advice">Advice</a>
         </div>
       </div>
     </div>
         
     <div class="col-md-8 lead">
-      <div class="waiter hide fade out">
+      <div class="waiter hide fade out" data-loader>
         <div class="jumbotron-icon">
           <span class="fa fa-3 fa-magic"></span>
         </div>
@@ -35,17 +35,24 @@
 
 <!-- information_form -->
       <div class="text-left hide form" id="information_form">
-        <div>
-          
-          <div class="form-group">
-            <h3>Edit <span data-section>Overview</span></h3>
-            <textarea rows="12" class="form-control markdown-data" id="txa_information_content" name="txa_information_content"><%= URI.decode(ActiveSupport::JSON.decode(@submission.content)['body']) if @submission.present? %></textarea>
+        <h4>Edit <span data-section>Overview</span></h4>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <textarea rows="12" class="form-control markdown-data" id="txa_information_content" name="txa_information_content"><%= URI.decode(ActiveSupport::JSON.decode(@submission.content)['body']) if @submission.present? %></textarea>
+            </div>
           </div>
           
-          <p class="text-right">
-            <a href="#" class="btn btn-info btn-lg" id="btn_update_information">Submit <i class="glyphicon glyphicon-upload"></i></a>
-          </p>
-    
+          <div class="panel-footer text-right">
+          
+            <%- if @submission.present? %>
+            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#mdl_reject" data-id="<%= @submission.id %>">Reject <i class="glyphicon glyphicon-remove-circle"></i></a>
+            <%- end %>
+            
+            <a href="#" class="btn btn-primary" id="btn_update_information"><%= @submission.present? ? "Approve" : "Submit"%> <i class="glyphicon glyphicon-upload"></i></a>
+            
+          </div>
+          
         </div>
       </div>
 <!-- end of information_form -->
