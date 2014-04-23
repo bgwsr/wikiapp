@@ -87,7 +87,11 @@ module ApplicationHelper
   
   
   def parse_visio(contents)
-    contents.gsub(/@\b(\S*)\b!/, '<div data-component-uri="//silk.co/widget/queryviewer/1" data-queryview-uri="\1"></div>')
+      contents.gsub(/@\b(\S*)\b!/, '<div data-component-uri="//silk.co/widget/queryviewer/1" data-queryview-uri="\1"></div>')
+  end
+  
+  def reverse_visio(contents)
+    contents.gsub(/<div data-component-uri=\"\/\/silk.co\/widget\/queryviewer\/1\" data-queryview-uri=\"(\S*)\"><\/div>/, '@\1!')
   end
   
   

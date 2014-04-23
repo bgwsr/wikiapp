@@ -21,7 +21,7 @@ class Api::V1::SubmissionsController < ApplicationController
     silker = Silker.new( silk_sid, ENV['SILK_SITE'] )
     article = silker.get_private_page_html(URI.encode(params[:silk_identifier]))
     html_article = Nokogiri.HTML( article )
-    render :json => {contents: html_article.css('div#nerubia').children.to_s}, :status => 200 and return
+    render :json => {contents: reverse_visio(html_article.css('div#nerubia').children.to_s)}, :status => 200 and return
   end
 
   def create

@@ -30,10 +30,12 @@ class WswController < ApplicationController
       if submission.present? and submission.silk_identifier.eql?( URI.decode(params[:s]) ) and params[:country].present?
         @submission = submission
         @section = (URI.decode(params[:s])[submission.country.length..-1]).strip
+        return
       else
         not_allowed
       end
     end
+    not_allowed unless params[:country].present?
   end
 
   def not_allowed

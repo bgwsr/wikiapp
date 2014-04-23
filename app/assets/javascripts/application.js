@@ -96,13 +96,20 @@ $('#information [data-target*="c_"]').click(function(e){
 
   }
   silk_identifier = encodeURI(get_country() + " " + information_section);
-  
+  $('.waiter.fade').removeClass('hide').addClass('in');
+  var ani = setInterval(function(){
+    $('.waiter.fade').toggleClass('in');
+  }, 300);
   $.get("/api/submissions/get_silk/"+silk_identifier, function(a){
     $('#txa_information_content').val( toMarkdown(a.contents) );
+    $('#information_form').fadeIn().removeClass('hide');
+    $('.waiter.fade').removeClass('in');
+    $('.waiter.fade').addClass('out hide');
+    clearInterval(ani);
   });
   
   $('[data-section]').text( decodeURI(silk_identifier) );
-  $('#information_form').fadeIn().removeClass('hide');
+  
   return false;
 });
 

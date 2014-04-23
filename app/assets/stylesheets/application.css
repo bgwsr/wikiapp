@@ -26,7 +26,13 @@ body#sessions, body#wsw {
   background-size: auto 100%!important;
 }
 body#wsw {
-  background-image: url('http://s3.amazonaws.com/WSW/media/scapes.jpg');
+  background-image: url('http://s3.amazonaws.com/WSW/media/scapes-arthur.jpg');
+  background-size: 100% auto!important;
+}
+
+#sidenav {
+  background: rgba(255, 255, 255, 0.77);
+  padding: 0 10px 0 15px;
 }
 
 #site_alert {
