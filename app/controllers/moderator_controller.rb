@@ -3,7 +3,7 @@ class ModeratorController < ApplicationController
   def index
     if current_user.present? and current_user.ambassador?
       if current_user.countries.eql?('all')
-        @submissions = Submission.includes(:user).where(status: ["pending", "imported"]).limit(10).orderby('id desc')
+        @submissions = Submission.includes(:user).where(status: ["pending", "imported"]).limit(10).order('id desc')
       else
         countries = current_user.countries.split(",")
         @submissions = Submission.includes(:user).where(country: countries, status: ["pending", "imported"]).limit(10).order('id desc')
