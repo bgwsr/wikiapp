@@ -116,21 +116,21 @@ module ApplicationHelper
               <div>   <a href="/page/'+country+'%20Overview">Taking A Closer Look</a>
               </div>
               <div>
-                <a href="/page/'+country+'%20Ecosystem"><b>2. Startup Ecosystem</b></a></div>
+                <a href="/page/'+country+'%20Startup%20Ecosystem"><b>2. Startup Ecosystem</b></a></div>
                 
-              <div>   <a href="/page/'+country+'%20Ecosystem">Notable Startups</a>
+              <div>   <a href="/page/'+country+'%20Startup%20Ecosystem">Notable Startups</a>
               </div>
               
-              <div>   <a href="/page/'+country+'%20Ecosystem">Investors</a>
+              <div>   <a href="/page/'+country+'%20Startup%20Ecosystem">Investors</a>
               </div>
               
-              <div>   <a href="/page/'+country+'%20Ecosystem">Community</a>
+              <div>   <a href="/page/'+country+'%20Startup%20Ecosystem">Community</a>
               </div>
               
-              <div>   <a href="/page/'+country+'%20Ecosystem">Local Heroes</a>
+              <div>   <a href="/page/'+country+'%20Startup%20Ecosystem">Local Heroes</a>
               </div>
               
-              <div>   <a href="/page/'+country+'%20Ecosystem">Government Institutions</a>
+              <div>   <a href="/page/'+country+'%20Startup%20Ecosystem">Government Institutions</a>
               </div>
               
               <div><a href="/page/'+country+'%20Opportunities"><b>3. Opportunities</b></a></div>
