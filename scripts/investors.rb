@@ -2,7 +2,7 @@ require 'csv'
 
 keys = ["Investor Name", "Headquarter Country", "Headquarter City", "Investor Category", "Year Started", "# Total Internet Startup Investments", "# New Internet Startup Investments Made in 2013", "Typical Investment Size ($USD)", "# Total Internet Startup Investments Made in Philippines", "Web Address", "Comments", "Reference Links", "Submitted By", "Approved", "Uploaded", "Reviewer", "Last Modified"]
 
-file = '/Users/gerard/Downloads/philippines/investors.tsv'
+file = '/Users/gerard/Downloads/malaysia/investors.tsv'
 rows = CSV.read( file , { col_sep: "\t" } ).map { |a| Hash[ keys.zip(a) ] }
 category = "Investors"
 exclude_tags = ["Investor Name", "Submitted By", "Approved", "Comments", "Reference Links", "Country", "Uploaded", "Reviewer", "Last Modified"]

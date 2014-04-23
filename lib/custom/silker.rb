@@ -6,7 +6,6 @@ class Silker
   attr_accessor :site_name
 
   SILK_API_URL    = 'https://api.silk.co/v1.12.5'
-  SILK_DOMAIN     = 'silk.co'
   REQUEST_SUFFIX  = '/?type=json'
 
 
@@ -34,7 +33,7 @@ class Silker
   end
 
   def my_site
-    "#{self.site_name}.#{ SILK_DOMAIN }"
+    "#{self.site_name}"
   end
  
 #$ curl https://api.silkapp.com/v1.4.0/site/uri/mysite.silkapp.com/permission
