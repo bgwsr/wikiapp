@@ -30,16 +30,28 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
   }
   $('[data-trigger="manual"][data-toggle="tooltip"]').tooltip('show');
-  if ( $('input#silk_identifier').length )
-  {
-    silk_identifier = $('input#silk_identifier').val();
-    information_section = $('input#section').val();
-    $('[data-section]').text( decodeURI(silk_identifier) );
-    $('#information_form').fadeIn().removeClass('hide');
-  }
   
   if ( $('[data-loader]').length ) {
     ani = new LoadingIcon().init();
+  }
+  
+  if ( $('input#section').length )
+  {
+    information_section = $('input#section').val();
+    
+    if ( $('input#silk_identifier').length )
+    {
+      silk_identifier = $('input#silk_identifier').val();
+      $('#information_form').fadeIn().removeClass('hide');
+    }
+    else
+    {
+      silk_identifier = get_country() + " " + $('input#section').val();
+      get_information();
+    }
+    
+    $('[data-section]').text( decodeURI(silk_identifier) );
+    
   }
 });
 
@@ -67,6 +79,21 @@ $('[data-target="edit_page"]').click(function(e){
 $('#btn_edit_page').click(function(){
   location.href='/edit-entry/'+encodeURI($('#edit_page #silk_identifier').val());
 });
+
+function get_information()
+{
+  silk_identifier = encodeURI(get_country() + " " + information_section);
+  ani.start();
+  $.get("/api/submissions/get_silk/"+silk_identifier, function(a){
+    $('#txa_information_content').val( toMarkdown(a.contents) );
+    $('#information_form').fadeIn().removeClass('hide');
+    $('.waiter.fade').removeClass('in');
+    $('.waiter.fade').addClass('out hide');
+    ani.stop();
+  });
+  
+  $('[data-section]').text( decodeURI(silk_identifier) );
+}
 
 $('#information [data-target*="c_"]').click(function(e){
   $('#information_form:visible').addClass('hide');
@@ -103,17 +130,8 @@ $('#information [data-target*="c_"]').click(function(e){
       break;
 
   }
-  silk_identifier = encodeURI(get_country() + " " + information_section);
-  ani.start();
-  $.get("/api/submissions/get_silk/"+silk_identifier, function(a){
-    $('#txa_information_content').val( toMarkdown(a.contents) );
-    $('#information_form').fadeIn().removeClass('hide');
-    $('.waiter.fade').removeClass('in');
-    $('.waiter.fade').addClass('out hide');
-    ani.stop();
-  });
   
-  $('[data-section]').text( decodeURI(silk_identifier) );
+  get_information();
   
   return false;
 });

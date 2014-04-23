@@ -6,6 +6,9 @@
   <input type="hidden" id="submission_id" value="<%= @submission.id %>">
   <input type="hidden" id="section" value="<%= @section %>">
   <%- end %>
+  <%- if params[:page].present? %>
+  <input type="hidden" id="section" value="<%= params[:page] %>">
+  <%- end %>
   <!-- choose_country -->
   <div class="row text-left form" id="choose_country">
         

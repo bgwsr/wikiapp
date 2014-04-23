@@ -191,6 +191,8 @@ module ApplicationHelper
           </div>
         </div>
         <div class="layout content">
+          <div id="product-bar" style="display:block; width:1px; height:1px; float:right; overflow: visible;"><a href="'+information_edit_url(country: country, page: section)+'" class="toolbar-button action edit-page" style="color: #ffffff; width: 100px;">Edit Page</a></div>
+        
           <div data-component-uri="//silk.co/block/simple/1" class="block"><div data-component-uri="//silk.co/widget/text/1" class="header text"><h1>'+country+' '+section+'</h1></div></div>
           
           <div data-component-uri="//silk.co/block/simple/1" class="block">
