@@ -17,6 +17,7 @@ Wikiapp::Application.routes.draw do
       get "submissions/silker/:silk_identifier", to: "submissions#silker"
       get "submissions/get_silk/:silk_identifier", to: "submissions#silker_page"
       post "submissions/update_silk", to: "submissions#update_silk", as: "information_update"
+      post "submissions/queue", to: "submissions#queue_updates", as: "queue_updates"
       
     end
   end

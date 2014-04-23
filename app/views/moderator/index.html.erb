@@ -21,17 +21,22 @@
               country = ''
               category = ''
               city = ''
-              tags.each do |tag|
-                country = URI.decode(tag["country"]) if tag["country"].present?
-                category = URI.decode(tag["collection"]) if tag["collection"].present?
-                city = URI.decode(tag["city"]) if tag["city"].present?
+              if tags.present?
+                tags.each do |tag|
+                  country = URI.decode(tag["country"]) if tag["country"].present?
+                  category = URI.decode(tag["collection"]) if tag["collection"].present?
+                  city = URI.decode(tag["city"]) if tag["city"].present?
+                end
               end
               
               country,collection,title = submission.silk_identifier.split(':')
               article = contents["body"]
+              verify_entry_url = "/verify-entry?silk_identifier=#{submission.silk_identifier}"
+              verify_entry_url = "/information/#{submission.country}?i=#{submission.id}&s=#{submission.silk_identifier}" if collection.nil?
+              
           %>
-            <a class="list-group-item" href="/verify-entry?silk_identifier=<%= submission.silk_identifier %>">
-              <h6><%= title %> <small>A <%= collection.singularize %> in the <%= country %> &mdash; <%= submission.user.email %></small> <i class="text-primary pull-right glyphicon glyphicon-chevron-right"></i></h6>
+            <a class="list-group-item" href="<%= verify_entry_url %>">
+              <h6><%= collection.present? ? title : URI.decode(country) %> <small><%- if collection.present? %>A <%= collection.singularize %> in the <%= country %><%- end %> &mdash; <%= submission.user.email %></small> <i class="text-primary pull-right glyphicon glyphicon-chevron-right"></i></h6>
             </a>
           <%- end %>
           </div>

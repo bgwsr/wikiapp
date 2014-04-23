@@ -86,7 +86,9 @@ module ApplicationHelper
   end
   
   
-  
+  def parse_visio(contents)
+    contents.gsub(/@\b(\S*)\b!/, '<div data-component-uri="//silk.co/widget/queryviewer/1" data-queryview-uri="\1"></div>')
+  end
   
   
   def dummy(country, section, contents)

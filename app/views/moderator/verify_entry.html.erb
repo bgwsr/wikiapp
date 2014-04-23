@@ -24,11 +24,12 @@
               tags = contents["tags"]
               converted_tags = Hash.new
               available_tags = ['category']
-
-              tags.each do |tag|
-                tag.each_key do |key|
-                  converted_tags[key] = URI.decode(tag[key])
-                  available_tags.push key unless key.eql?('category')
+              if tags.present?
+                tags.each do |tag|
+                  tag.each_key do |key|
+                    converted_tags[key] = URI.decode(tag[key])
+                    available_tags.push key unless key.eql?('category')
+                  end
                 end
               end
               first_tags = converted_tags if first_tags.blank?

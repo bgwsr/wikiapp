@@ -1,7 +1,11 @@
 <input type="hidden" id="country" value="<%= params[:country] %>">
 <div class="text-center" id="information">
   <%- if current_user.present? %>
-
+  <%- if @submission.present? %>
+  <input type="hidden" id="silk_identifier" value="<%= @submission.silk_identifier %>">
+  <input type="hidden" id="submission_id" value="<%= @submission.id %>">
+  <input type="hidden" id="section" value="<%= @section %>">
+  <%- end %>
   <!-- choose_country -->
   <div class="row text-left form" id="choose_country">
         
@@ -35,7 +39,7 @@
           
           <div class="form-group">
             <h3>Edit <span data-section>Overview</span></h3>
-            <textarea rows="12" class="form-control markdown-data" id="txa_information_content" name="txa_information_content"></textarea>
+            <textarea rows="12" class="form-control markdown-data" id="txa_information_content" name="txa_information_content"><%= URI.decode(ActiveSupport::JSON.decode(@submission.content)['body']) if @submission.present? %></textarea>
           </div>
           
           <p class="text-right">

@@ -27,11 +27,20 @@ $(document).ready(function(){
   });
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-trigger="manual"][data-toggle="tooltip"]').tooltip('show');
+  if ( $('input#silk_identifier').length )
+  {
+    silk_identifier = $('input#silk_identifier').val();
+    information_section = $('input#section').val();
+    $('[data-section]').text( decodeURI(silk_identifier) );
+    $('#information_form').fadeIn().removeClass('hide');
+  }
 });
 
 window.location.hash = "";
 var data = {collection: '', country: '', silk_identifier: ''};
 var target_collection = '';
+var information_section = 'Overview';
+
 
 $('[data-target="choose_country"]').click(function(e){
   e.preventDefault();
@@ -52,7 +61,6 @@ $('#btn_edit_page').click(function(){
   location.href='/edit-entry/'+encodeURI($('#edit_page #silk_identifier').val());
 });
 
-information_section = 'Overview'
 $('#information [data-target*="c_"]').click(function(e){
   e.preventDefault();
   
@@ -96,18 +104,22 @@ $('#information [data-target*="c_"]').click(function(e){
   $('[data-section]').text( decodeURI(silk_identifier) );
   $('#information_form').fadeIn().removeClass('hide');
   return false;
-  //target_collection = '#'+$(this).attr('data-target');
 });
 
 $('#btn_update_information').click(function(e){
   e.preventDefault();
-  submit_information_update();
+  submit_information_update(  );
 });
 
 function submit_information_update()
 {
+  action_url = "/api/submissions/queue";
+  if ($('input#silk_identifier').length)
+  {
+    action_url = "/api/submissions/update_silk"
+  }
   $.ajax({
-    url: "/api/submissions/update_silk",
+    url: action_url,
     type: 'POST',
     dataType: 'json',
     contentType: 'application/json',
@@ -425,7 +437,7 @@ function collect_person()
 
 function collect_information()
 {
-  return '{"country":"'+get_country()+'","section":"'+information_section+'","contents":"'+encodeURI($('#txa_information_content').val())+'"}';
+  return '{"silk_identifier":"'+silk_identifier+'", "country":"'+get_country()+'","section":"'+information_section+'","content":{"body":"'+encodeURI($('#txa_information_content').val())+'"}}';
 }
 
 var market_saturation = null;

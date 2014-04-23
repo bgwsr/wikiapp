@@ -91,6 +91,7 @@ class Api::V1::SubmissionsController < ApplicationController
   end
   
   def merge
+    
     if current_user.present? and current_user.ambassador?
       silk_identifier = URI.decode(params[:silk_identifier])
       submissions = Submission.where(silk_identifier: silk_identifier)
@@ -153,27 +154,100 @@ class Api::V1::SubmissionsController < ApplicationController
   def update_silk
     section = 'Overview'
     section = params[:section] if params[:section].present?
-    if params[:contents].present? and params[:country].present?
+    if params[:content].present? and params[:content][:body].present? and params[:country].present?
       silk_sid = ' '
       while silk_sid.nil? || silk_sid.include?(" ")
         silk_sid = Silker.authenticate( ENV['SILK_EMAIL'], ENV['SILK_PASSWORD'] )
       end
       silker = Silker.new( silk_sid, ENV['SILK_SITE'] )
       
+      silk_identifier = "#{params[:country]} #{section}"
+      submissions = Submission.where(silk_identifier: silk_identifier)
+      submission = submissions.first
+      Archive.delete_all(id: submission.id)
+      archive = Archive.new(submission.attributes)
+      contents = ActiveSupport::JSON.decode(archive.content)
+      body = URI.decode(params[:content][:body])
+      contents["body"] = body
+      archive.content = ActiveSupport::JSON.encode(contents)
+      
       markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true, :filter_html => true)
 
-      contents = markdown.render(URI.decode(params[:contents])).gsub("\n", "")
+      body = markdown.render(URI.decode(params[:content][:body]))
+      contents = parse_visio(body).gsub("\n", "")
       
       silk_html = dummy(params[:country], section, contents)
       
-      silk_result = silker.create_or_update_page( URI.encode("#{params[:country]} #{section}"), silk_html )
+      silk_result = silker.create_or_update_page( URI.encode(silk_identifier), silk_html )
       
-      render :xml => silk_result, :status => 200 and return if !silk_result.nil?
+      if !silk_result.nil? and archive.save
+        submission.delete
+        render :xml => silk_result, :status => 200 and return 
+      end
     end
     failure
   end
   
+  def queue_updates
+    render :text => 'Error', status: :unprocessable_entity unless params[:country].present? and params[:silk_identifier].present? and params[:content].present?
+    
+    status_code = queue_for_moderation(params[:country], params[:silk_identifier], params[:content])
+    render :text => 'Done', status: 200 and return if status_code.eql?(200)
+    render :text => 'Error', status: :unprocessable_entity and return if status_code.eql?(:unprocessable_entity)
+    render :text => 'You are not allowed to do that!', status: 403 and return if status_code.eql?(403)
+    
+  end
+
+
+
   private
+
+  def queue_for_moderation(country, silk_identifier, contents)
+  
+    if current_user.present?
+      if params[:id].present?
+        s = Submission.where(id: params[:id])
+        if s.present?
+          s = s.first
+        else
+          archive = Archive.find(params[:id])
+          s = Submission.new(archive.attributes)
+          s.save
+        end
+        s.status = "pending"
+      else
+        s = Submission.new
+        s.silk_identifier = URI.decode(silk_identifier)
+        s.user_id = current_user.id
+        s.country = URI.decode(country)
+      end
+      
+      s.content = contents.to_json
+
+      if s.save
+        recipient = User.select('GROUP_CONCAT(email) emails').where("countries = 'all' OR countries = ? OR countries LIKE ? OR countries LIKE ?", "#{s.country}", "#{s.country},%", "%,#{s.country}")
+        if recipient.present?
+          markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true, :filter_html => true)
+
+          body = markdown.render(contents['body']).gsub("\n", "<br />")
+          quick_accept_url = api_submissions_accept_url(k: encrypt(s.id), a: s.id)
+          
+          unless params[:id].present?
+            SubmissionNotifier.need_verification(recipient.first.emails, s, body.html_safe, quick_accept_url).deliver
+          end
+          
+        end
+        
+        return 200
+      end
+    else
+      return 403
+    end
+    
+    return :unprocessable_entity
+
+  end
+  
   def tag_builder( country, category, tags )
     tags_html = '<div style="margin-bottom: 20px;">'
         
