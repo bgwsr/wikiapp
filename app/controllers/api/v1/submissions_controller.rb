@@ -185,7 +185,7 @@ class Api::V1::SubmissionsController < ApplicationController
       
       if !silk_result.nil? and archive.save
         submission.delete
-        render :xml => silk_result, :status => 200 and return 
+        render :json => {result: silk_result}, :status => 200 and return 
       end
     end
     failure
