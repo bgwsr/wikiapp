@@ -126,7 +126,8 @@ function submit_information_update()
     processData: false,
     data: collect_information(),
     success: function(o_return, s_status, o_xhr) {
-      
+      $('#popup .modal-body').html('Your contribution have been saved. Thank you!');
+      $('#popup').modal('show');
     }
   });
 }

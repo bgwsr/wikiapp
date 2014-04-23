@@ -33,6 +33,21 @@ body#wsw {
   margin-top: 20px;
 }
 
+.modal-content {
+  overflow: hidden;
+}
+
+.modal-header {
+  background: #A893BE;
+  color: #fff;
+}
+
+.modal-title {
+  font-family: Georgia, Times New Roman, serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
 .btn {
   -webkit-transition: 250ms linear all;
   -moz-transition: 250ms linear all;
