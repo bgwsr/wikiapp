@@ -32,6 +32,8 @@ body#wsw {
 
 #sidenav {
   background: rgba(255, 255, 255, 0.77);
+  box-shadow: 0px 3px 20px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 0px 3px 20px rgba(0,0,0,0.5);
   padding: 0 10px 0 15px;
 }
 
