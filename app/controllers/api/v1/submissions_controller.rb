@@ -186,6 +186,9 @@ class Api::V1::SubmissionsController < ApplicationController
       if !silk_result.nil? and archive.save
         submission.delete
         render :json => {result: silk_result}, :status => 200 and return 
+      else
+        puts silk_html
+        render :json => {result: 'Silk error'}, :status => :unprocessable_entity and return 
       end
     end
     failure

@@ -158,7 +158,7 @@ function submit_information_update()
     success: function(o_return, s_status, o_xhr) {
       $('#popup .modal-body').html('Your contribution have been saved. Thank you!');
       $('#popup [data-dismiss]').click(function(){
-        location.href = '';
+        location.href = '/';
       });
       $('#popup').modal('show');
     }
