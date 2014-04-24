@@ -2,7 +2,7 @@ require 'csv'
 
 keys = ["Community Supporter Name", "Web Address", "City", "Community Role", "Address (If Applicable)", "Comments", "Submitted By", "Country", "Approved", "Uploaded", "Reviewer", "Last Modified"]
 
-file = '/Users/gerard/Downloads/malaysia/communities.tsv'
+file = '../../tsv/malaysia/communities.tsv'
 rows = CSV.read( file , { col_sep: "\t" } ).map { |a| Hash[ keys.zip(a) ] }
 category = "Communities"
 exclude_tags = ["Community Supporter Name", "Submitted By", "Approved", "Comments", "Reference Links", "Country", "Uploaded", "Reviewer", "Last Modified"]
